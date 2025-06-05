@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ login_user['account'] }} | 修改个人信息 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+    <!-- Main -->
+    <div id="main">
+        <!-- Intro -->
+        <section id="info">
+            <h2>修改个人信息</h2>
+            <form method="post" action="/edit_profile" enctype="multipart/form-data">
+                <table style="margin: 10px">
+                    <tr>
+                        <td style="vertical-align: middle;width: min-content">头像</td>
+                        <td style="vertical-align: middle">
+                            <input type="file" name="profilePhoto" value="上传新的头像">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;width: min-content">签名</td>
+                        <td
+                                style="vertical-align: middle;font-family: 楷体,system-ui;font-weight: bold;font-size: large">
+                            <input type="text" name="signature" placeholder="签名"
+                                   value="{{ login_user['signature'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;width: min-content">账号</td>
+                        <td style="vertical-align: middle">
+                            <input type="text" name="account" placeholder="账号" value="{{ login_user['account'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;width: min-content">邮箱</td>
+                        <td style="vertical-align: middle">
+                            <input type="text" name="email" placeholder="邮箱" value="{{ login_user['email'] }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: middle;width: min-content">电话</td>
+                        <td>
+                            <input type="text" name="telephone" placeholder="电话"
+                                   value="{{ login_user['telephone'] }}">
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" value="确定修改" class="button">
+            </form>
+        </section>
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+
+</body>
+
+</html>

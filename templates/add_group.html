@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>创建圈子 | 创作中心 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        <form action="/add_group" method="post" enctype="multipart/form-data">
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <label>
+                            <input type="text" name="name" style="font-size: larger" placeholder="给圈子取个好记的名字吧">
+                        </label>
+                    </div>
+                    <div class="meta">
+                        <span class="published">创建者：
+                            <a href="/profile/{{ login_user['id'] }}">{{ login_user['account'] }}</a>
+                        </span>
+                    </div>
+                </header>
+                <span class="image featured">
+                    <input type="file" name="group_icon" value="上传您的圈子图标">
+                    您可在此上传圈子的图标，该图片将会被裁剪为正方形
+                </span>
+                <!-- content -->
+                <label class="content">
+                    <textarea name="description" id="description" placeholder="介绍一下您的圈子吧" rows="4"></textarea>
+                </label>
+
+                <div style="display: flex">
+                    <input type="submit" value="提交" style="flex:1">
+                    <button style="flex: 1; margin-left: 5px;" type="reset">清除</button>
+                    <button style="flex: 1; margin-left: 5px;" onclick="window.history.back()">取消</button>
+                </div>
+            </article>
+        </form>
+    </div>
+
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+
+</body>
+
+</html>

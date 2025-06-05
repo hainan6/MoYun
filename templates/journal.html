@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ journal['title'] }} | 书评 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        {% include '_journal_single_article.html' %}
+
+        <!-- WriteComment -->
+        <div style="width: 100%; min-height: 30px;">
+            <h3>评论</h3>
+            <p>共 <span id="comment_num">{{ journal['comment_num'] }}</span> 条评论</p>
+            <div style="display: flex; width: 100%; align-items: stretch">
+                <input name="comment" type="text" style="margin-right: 5px" placeholder="发表一句友善的评论吧">
+                <button type="button" style="margin-right: 5px" id="addComment" onclick="addComment()">发布</button>
+                <button id="chatButton" type="button">AI辅助写作</button>
+            </div>
+        </div>
+        {% include '_chat_box.html' %}
+        <!-- Comments -->
+        <section style="margin: 5px;">
+            <ul class="posts" id="comments">
+                {% for comment in comments %}
+                    <li>
+                        <article>
+                            <header>
+                                <h3>{{ comment['content'] }}</h3>
+                                <span class="published">{{ comment['publish_time'] }}</span>
+                            </header>
+                            <a href="/profile/{{ comment['author_id'] }}" class="image">
+                                <img src="{{ comment['profile_photo'] }}" title="{{ comment['account'] }}"
+                                     style="border-radius: 10%;" alt="{{ comment['account'] }}_头像"/>
+                            </a>
+                        </article>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+<script type="text/javascript">
+    function addComment() {
+        $.ajax({
+            type: 'POST',
+            url: '/journal/{{ journal['id'] }}',
+            dataType: 'json',
+            data: {'comment_user_id': '{{ login_user['id'] }}', 'comment': $('input[name="comment"]').val()},
+            // 如果comment为空，则不发送请求
+            beforeSend: function () {
+                if ($('textarea[name="comment"]').val() === '') {
+                    document.getElementById('flask-info').innerHTML = '<div class="message">评论不能为空</div>';
+                    reloadFlaskInfo();
+                    return false
+                }
+            },
+            success: function (response) {
+                const newCommentElement = document.createElement('li');
+                newCommentElement.innerHTML = '<article><header><h3>' + response.comment + '</h3><span class="published">' + response.publish_time + '</span></header><a href="/profile/' + response.authorID + '" class="image"><img src="' + response.author_profile_photo + '" title="' + response.account + '"style="border-radius: 10%;" alt="' + response.account + '_头像"/></a></article>';
+                document.getElementById('comments').insertAdjacentElement('afterbegin', newCommentElement);
+                document.getElementsByName('comment')[0].value = '';
+                document.getElementById('comment_num').innerHTML = eval({{ journal['comment_num'] }}) + 1;
+                document.getElementById('flask-info').innerHTML = '<div class="message">评论成功</div>';
+                reloadFlaskInfo();
+            }
+        })
+    }
+
+    function addLike() {
+        $.ajax({
+            type: 'POST',
+            url: '/journal/{{ journal['id'] }}',
+            dataType: 'json',
+            data: {'like_user_id': '{{ login_user['id'] }}', 'like_num': '{{ journal['like_num'] }}'},
+            success: function (response) {
+                const flaskInfo = document.getElementById('flask-info');
+                document.getElementById('like_num').innerHTML = response.like_num;
+
+                if (response.is_liked === true) flaskInfo.innerHTML = '<div class="message">您已经点过赞了</div>';
+                else flaskInfo.innerHTML = '<div class="message">点赞成功</div>';
+                reloadFlaskInfo();
+            }
+        })
+    }
+</script>
+</body>
+
+</html>

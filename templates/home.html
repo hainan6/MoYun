@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ login_user['account'] }} | 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="/static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Posts -->
+        {% for journal in journals %}
+            {% include '_journal_article.html' %}
+        {% endfor %}
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Intro -->
+        <section id="intro">
+            <header>
+                <h2>主页</h2>
+                <p>欢迎回来，今天做些什么呢？</p>
+                <p>{{ weather['city'] }}天气{{ weather['weather'] }}，当前气温{{ weather['temperature'] }}℃({{ weather['temperature_range'][0] }}℃～{{ weather['temperature_range'][0] }}℃)，{{ weather['wind'] }}。</p>
+                <p id="jinrishici-sentence">正在加载今日诗词....</p>
+                <script async src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+            </header>
+        </section>
+
+        <!-- Mini Posts -->
+        <section>
+            <h2><a href="/message">消息中心</a></h2>
+            <div class="mini-posts">
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/message">书评回复</a></h3>
+                        {% if unread_message_num['journalComment'] ==0 %}
+                            <p>没有未读回复</p>
+                        {% else %}
+                            <p>{{ unread_message_num['journalComment'] }}条未读回复</p>
+                        {% endif %}
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/message">新帖</a></h3>
+                        {% if unread_message_num['groupDiscussion'] ==0 %}
+                            <p>没有未读新帖</p>
+                        {% else %}
+                            <p>{{ unread_message_num['groupDiscussion'] }}条未读新帖</p>
+                        {% endif %}
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/message">帖子回复</a></h3>
+                        {% if unread_message_num['discussionReply'] ==0 %}
+                            <p>没有未读回复</p>
+                        {% else %}
+                            <p>{{ unread_message_num['discussionReply'] }}条未读回复</p>
+                        {% endif %}
+                    </header>
+                </article>
+
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/message">私信</a></h3>
+                        {% if unread_message_num['chat'] ==0 %}
+                            <p>没有未读私信</p>
+                        {% else %}
+                            <p>{{ unread_message_num['chat'] }}条未读私信</p>
+                        {% endif %}
+                    </header>
+                </article>
+            </div>
+        </section>
+
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+
+</body>
+
+</html>

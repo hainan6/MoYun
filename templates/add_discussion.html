@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>发帖 | 墨韵 - {{ group['name'] }}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        <form action="/add_discussion/{{ group['id'] }}" method="post" enctype="multipart/form-data">
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <label><input type="text" name="title" placeholder="要讨论些什么？"></label>
+                    </div>
+                    <div class="meta">
+                        <span class="published">此处将会显示发布时间</span>
+                        <a href="/profile/{{ login_user['id'] }}" class="author">
+                            <span class="name">{{ login_user['account'] }}</span>
+                        </a>
+                    </div>
+                </header>
+                <!-- content -->
+                <label class="content">
+                    <textarea name="content" id="content" placeholder="帖子正文" rows="6"></textarea>
+                </label>
+                <input type="submit" value="提交">
+                <button id="chatButton" type="button">AI辅助写作</button>
+            </article>
+        </form>
+    </div>
+    {% include '_chat_box.html' %}
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+</body>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+</html>

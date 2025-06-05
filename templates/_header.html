@@ -1,0 +1,36 @@
+<header id="header">
+    <h1><a href="/home">墨 韵</a></h1>
+    <nav class="links">
+        <ul>
+            <li><a href="/home">主页</a></li>
+            <li><a href="/journal_menu">书评</a></li>
+            <li><a href="/book_menu">书籍</a></li>
+            <li><a href="/group_menu">圈子</a></li>
+            <li><a href="/message">消息</a></li>
+        </ul>
+    </nav>
+    <nav class="main">
+        <ul>
+            {% if login_user['id'] %}
+                <li class="profile">
+                    <a class="image" href="/profile/{{ login_user['id'] }}">
+                        <img src="{{ login_user['profile_photo'] }}" width="50%"
+                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;" alt="个人主页">
+                    </a>
+                </li>
+            {% endif %}
+            <li class="search">
+                <a class="fa-search" href="#search">Search</a>
+                <form id="search" method="get" action="/search">
+                    <label>
+                        <input type="hidden" name="type" value="all">
+                        <input type="text" name="keyword" placeholder="搜索"/>
+                    </label>
+                </form>
+            </li>
+            <li class="menu">
+                <a class="fa-bars" href="#menu">Menu</a>
+            </li>
+        </ul>
+    </nav>
+</header>

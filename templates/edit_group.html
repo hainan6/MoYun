@@ -1,0 +1,225 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ group['name'] }} | 圈子信息修改 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="{{ group['group_icon'] }}" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        {% for discussion in discussions %}
+            <article class="post" id="{{ discussion['id'] }}">
+                <header>
+                    <div class="title">
+                        <h2><a href="/discussion/{{ discussion['id'] }}">{{ discussion['title'] }}</a></h2>
+                    </div>
+                    <div class="meta">
+                        <span class="published">{{ discussion['post_time'] }}</span>
+                        <a href="/profile/{{ discussion['poster_id'] }}" class="author">
+                            <span class="name">{{ discussion['account'] }}</span>
+                        </a>
+                    </div>
+                </header>
+                <p>{{ discussion['content'] }}</p>
+                <footer>
+                    <ul class="actions">
+                        <li><a onclick="deleteDiscussion({{ discussion['id'] }})" class="button large">删除帖子</a></li>
+                    </ul>
+                    <ul class="stats">
+                        <li><a href="/account/{{ discussion['poster_id'] }}">{{ discussion['account'] }}</a></li>
+                        <li><i class="icon solid fa-comment">{{ discussion['reply_num'] }}</i></li>
+                    </ul>
+                </footer>
+            </article>
+        {% endfor %}
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Intro -->
+        <section id="intro">
+            <form action="/edit_group/{{ group['id'] }}" enctype="multipart/form-data" method="post">
+                <header>
+                    <label><input type="hidden" name="operation" value="edit_group_info"></label>
+                    <label>
+                        <input type="text" name="group_name" placeholder="圈子名称" value="{{ group['name'] }}">
+                    </label>
+                    <img src="{{ group['group_icon'] }}" alt="{{ group['name'] }}_logo"
+                         style="width: 200px; height: 200px; border-radius: 10%;margin: 10px">
+                    <label>
+                        <input type="file" name="group_icon" accept="image/jpeg,image/jpg,image/png,image/webp">
+                    </label>
+                </header>
+
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>版主</td>
+                        <td><a href="/profile/{{ group['founder_id'] }}">{{ group['account'] }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>创建时间</td>
+                        <td>{{ group['establish_time'] }}</td>
+                    </tr>
+                    <tr>
+                        <td>圈子介绍</td>
+                        <td>
+                            <label>
+                                <input type="text" name="group_description" value="{{ group['description'] }}">
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>当前身份</td>
+                        <td>
+                            {% if login_user['id']==group['founder_id'] %}
+                                版主
+                            {% else %}
+                                普通用户
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div style="display: flex">
+                    <input style="flex: 1" type="submit" value="提交">
+                    <input style="flex: 1; margin-left: 5px" type="reset" value="清空">
+                    <button style="flex: 1; margin-left: 5px" onclick="window.history.back()">取消</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="member">
+            <h2>当前成员：</h2>
+            <!-- Post -->
+            {% for user in group_users %}
+                <article class="mini-post">
+                    <header>
+                        <h3>
+                            <a href="/profile/{{ user['user_id'] }}">{{ user['account'] }}</a>
+                            {% if user['user_id']==group['founder_id'] %}
+                                {% include '_badge_founder.html' %}
+                            {% else %}
+                                {% include '_badge_user.html' %}
+                            {% endif %}
+                        </h3>
+
+                        {% if login_user['id']!=user['id'] and user['user_id']!=group['founder_id'] %}
+                            <!-- 不能删除自己和圈子创建者 -->
+                            <div style="display: flex">
+                                <button class="small" onclick="deleteUser({{ user['user_id'] }})">删除用户</button>
+                            </div>
+                        {% endif %}
+
+                        <time class="published" datetime="{{ user['join_time'] }}">
+                            加入时间：{{ user['join_time'] }}
+                        </time>
+                        <a href="/profile/{{ user['user_id'] }}" class="author">
+                            <img src="{{ user['profile_photo'] }}" alt="{{ user['account'] }}_头像">
+                        </a>
+                    </header>
+                </article>
+            {% endfor %}
+        </section>
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+<script>
+    function deleteDiscussion(discussion_id) {
+        $.ajax({
+            url: '/edit_group/{{ group["id"] }}',
+            type: 'POST',
+            data: {
+                operation: 'delete_discussion',
+                discussion_id: discussion_id
+            },
+            success: function (response) {
+                if (response['status'] === 'success') {
+                    alert('删除成功');
+                    const element = document.getElementById(discussion_id);
+                    element.parentNode.removeChild(element);
+                } else {
+                    alert('删除失败');
+                }
+            }
+        })
+    }
+
+    function deleteUser(user_id) {
+        $.ajax({
+            url: '/edit_group/{{ group["id"] }}',
+            type: 'POST',
+            data: {
+                operation: 'delete_user',
+                user_id: user_id
+            },
+            success: function (response) {
+                if (response['status'] === 'success') {
+                    alert('删除成功');
+                    const element = document.getElementById(`user_${user_id}`);
+                    element.parentNode.removeChild(element);
+                } else {
+                    alert('删除失败');
+                }
+            }
+        })
+    }
+</script>
+
+<style>
+    .badge-container {
+        display: inline-flex;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 4px;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: white;
+    }
+
+    .badge-left {
+        background-color: #222222;
+        margin-right: 0;
+    }
+
+    .badge-right {
+        margin-left: 0;
+    }
+
+    .badge-right.user {
+        background-color: dodgerblue;
+    }
+
+    .badge-right.founder {
+        background-color: goldenrod;
+    }
+</style>
+</body>
+
+</html>

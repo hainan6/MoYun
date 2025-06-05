@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ keyword }} | 搜索结果 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        {% for item in results %}
+            {% if item['search_type']=='journal' %}
+                <article class="post">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/journal/{{ item['id'] }}">{{ item['title'] }}</a></h2>
+                        </div>
+                        <div class="meta">
+                            <span class="published">{{ item['publish_time'] }}</span>
+                            <a href="/profile/{{ item['author_id'] }}" class="author">
+                                <span class="name">{{ login_user['account'] }}</span>
+                            </a>
+                        </div>
+                    </header>
+                    <a href="/journal/{{ item['id'] }}" class="image featured">
+                        <img src="{{ item['header'] }}" alt="{{ item['title'] }}_头图"/>
+                    </a>
+                    <p>{{ item['first_paragraph'] }}</p>
+                    <p>结果类型：书评</p>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/journal/{{ item['id'] }}" class="button large">阅读全文</a></li>
+                        </ul>
+                        <ul class="stats">
+                            <li><a href="/account/{{ login_user['id'] }}">{{ login_user['account'] }}</a></li>
+                            <li><i class="icon solid fa-heart">{{ item['like_num'] }}</i></li>
+                            <li><i class="icon solid fa-comment">{{ item['comment_num'] }}</i></li>
+                        </ul>
+                    </footer>
+                </article>
+            {% elif item['search_type']=='book' %}
+                <article class="post">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/book/{{ item['id'] }}">{{ item['title'] }}</a></h2>
+
+                            <p class="score" title="作者">
+                                <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">作者：{{ item['author'] }}</a>
+                            </p>
+                        </div>
+                        <div class="meta">
+                            <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">
+                                <img src="{{ item['book_cover'] }}" alt="{{ item['title'] }}_封面" style="height: 150px">
+                            </a>
+                        </div>
+                    </header>
+                    <span class="published">{{ item['publish_date'] }}</span>
+                    <p>{{ item['description'] }}</p>
+                    <p>结果类型：书籍</p>
+                    <footer>
+                        <ul class="actions">
+                            <li><a href="/book/{{ item['id'] }}" class="button large">查看详情</a></li>
+                        </ul>
+                        <ul class="stats">
+                            {% if item['douban_id'] %}
+                                <li>
+                                    <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">
+                                        <i class="icon solid fa-book">豆瓣评分：{{ item['douban_score'] }}</i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if item['bangumi_id'] %}
+                                <li>
+                                    <a href="https://bgm.tv/subject{{ item['bangumi_id'] }}">
+                                        <i class="icon solid fa-comment">Bangumi评分：{{ item['bangumi_score'] }}</i>
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </footer>
+                </article>
+            {% elif item['search_type']=="group" %}
+                <article class="post">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/group/{{ item['id'] }}">{{ item['name'] }}</a></h2>
+                            <p class="score" title="创建者">
+                                <a href="/profile/{{ item['founder_id'] }}">创建者：{{ item['founder'] }}</a>
+                            </p>
+                            <p>{{ item['description'] }}</p>
+
+                        </div>
+                        <div class="meta">
+                            <a href="/group/{{ item['id'] }}">
+                                <img src="{{ item['group_icon'] }}" alt="{{ item['name'] }}_头像"
+                                     style="horiz-align: center;border-radius: 5%;height: 150px;width: 150px">
+                            </a>
+                        </div>
+                    </header>
+                    <span class="published">{{ item['publish_date'] }}</span>
+                    <p>{{ item['description'] }}</p>
+                    <p>结果类型：圈子</p>
+                </article>
+            {% elif item['search_type']=="user" %}
+                <article class="post">
+                    <header>
+                        <div class="title">
+                            <h2><a href="/profile/{{ item['id'] }}">{{ item['account'] }}</a></h2>
+                            <p>{{ item['signature'] }}</p>
+                        </div>
+                        <div class="meta">
+                            <a href="/profile/{{ item['id'] }}">
+                                <img src="{{ item['profile_photo'] }}" alt="{{ item['account'] }}_头像"
+                                     style="horiz-align: center;border-radius: 5%;height: 150px;width: 150px">
+                            </a>
+                        </div>
+                    </header>
+                    <span class="published">身份：{{ item['role'] }}</span>
+                    <p>结果类型：用户</p>
+                </article>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+
+        <!-- Intro -->
+        <section id="intro">
+            <header>
+                <h2>搜索</h2>
+                <p>搜索类型：{{ search_type }}</p>
+                <p>搜索内容：{{ keyword }}</p>
+                <p>搜索用时：{{ cost_time }}秒</p>
+                <p>搜索结果：{{ results | length }}条相关结果</p>
+            </header>
+        </section>
+
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<div id="chatBox" class="hidden">
+    <div id="messages" style=" flex-grow: 1; overflow-y: auto; margin-bottom: 10px;">
+    </div>
+    <div style="display: flex">
+        <input type="text" id="queryInfo" style="flex: 1;margin-right: 5px;" placeholder="在此处输入，向AI获取意见">
+        <button style="width: fit-content; margin-right: 5px;" onclick="queryLLM()">发送</button>
+        <button style="width: fit-content" id="hideButton">最小化</button>
+    </div>
+</div>
+
+<style>
+    #chatBox {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    #chatBox.hidden {
+        display: none;
+    }
+
+    div.message {
+        display: flex;
+        padding: 5px 0;
+        margin-bottom: 5px;
+
+        p {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 0;
+        }
+    }
+
+    div.message.chatbot {
+        justify-content: flex-start;
+
+        p {
+            color: rgb(60, 59, 59);
+            background: rgba(160, 160, 160, 0.075);
+        }
+    }
+
+    div.message.user {
+        justify-content: flex-end;
+
+        p {
+            color: white;
+            background: #2ebaae;
+        }
+    }
+</style>
+<script>
+    document.getElementById('chatButton').addEventListener('click', function () {
+        this.classList.toggle('hidden');
+        document.getElementById('chatBox').classList.remove('hidden');
+    }); // 隐藏按钮，显示聊天框
+    document.getElementById('hideButton').addEventListener('click', function () {
+        document.getElementById('chatButton').classList.remove('hidden');
+        document.getElementById('chatBox').classList.add('hidden');
+    }); // 显示按钮，隐藏聊天框
+    function queryLLM() {
+        let messages = [];
+        const query_info_elem = document.getElementById('queryInfo');
+        const messages_elem = document.getElementById('messages');
+        // 获取所有的消息，组织成数组
+        Array.from(messages_elem.children).forEach(function (elem) {
+            if (elem.classList.contains('chatbot')) {
+                messages.push({
+                    role: 'assistant',
+                    content: elem.querySelector('p').textContent
+                })
+            } else if (elem.classList.contains('user')) {
+                messages.push({
+                    role: 'user',
+                    content: elem.querySelector('p').textContent
+                })
+            }
+        });
+        messages.push({
+            role: 'user',
+            content: query_info_elem.value
+        });
+
+        messages_elem.innerHTML += `<div class="message user"><p>${query_info_elem.value}</p></div>`;// 添加用户消息
+        query_info_elem.value = '正在生成中....'; // 禁用输入框
+        query_info_elem.disabled = true;
+
+        $.ajax({
+            url: '/query_llm',
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(messages),
+            beforeSend: function () {
+                if (messages.length === 0) {
+                    document.getElementById('flaskInfo').innerHTML = '请输入内容';
+                    reloadFlaskInfo();
+                    return false;
+                }
+            },
+            success: function (response) {
+                if (response.status) {
+                    messages_elem.innerHTML += `<div class="message chatbot"><p>${response.content}</p></div>`; // 添加机器人消息
+                    query_info_elem.value = ''; // 清空输入框
+                    query_info_elem.disabled = false; // 启用输入框
+                } else {
+                    document.getElementById('flaskInfo').innerHTML = response.content;
+                    const user_message_elem = messages_elem.lastChild; // 获取用户刚刚发的消息
+                    query_info_elem.value = user_message_elem.find('p').text(); // 将输入框的内容设置为用户刚刚发的消息
+                    messages_elem.removeChild(user_message_elem); // 删除用户消息
+                    query_info_elem.disabled = false; // 启用输入框
+                    reloadFlaskInfo();
+                }
+            },
+            error: function () {
+                document.getElementById('flaskInfo').innerHTML = response.content;
+                const user_message_elem = messages_elem.lastChild; // 获取用户刚刚发的消息
+                query_info_elem.value = user_message_elem.find('p').text(); // 将输入框的内容设置为用户刚刚发的消息
+                messages_elem.removeChild(user_message_elem); // 删除用户消息
+                query_info_elem.disabled = false; // 启用输入框
+                reloadFlaskInfo();
+            }
+        })
+    }
+</script>

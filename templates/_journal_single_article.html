@@ -1,0 +1,39 @@
+<article class="post">
+    <header>
+        <div class="title">
+            <h2><a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a></h2>
+        </div>
+        <div class="meta">
+            <span class="published">{{ journal['publish_time'] }}</span>
+            <a href="/profile/{{ author['id'] }}" class="author">
+                <span class="name">{{ author['account'] }}</span>
+                <img src="{{ author['profile_photo'] }}" alt="{{ author['account'] }}">
+            </a>
+        </div>
+    </header>
+    <span class="image featured">
+        <img src="{{ journal_header }}" alt="{{ journal['title'] }}_头图"/>
+    </span>
+    <!-- content -->
+    <span class="content">
+        {% for para in journal['content'] %}
+            <p>{{ para }}</p>
+        {% endfor %}
+    </span>
+
+    <span class="mini-post" style="padding: 10px;width: fit-content">
+        <a href="/book/{{ book['id'] }}">
+            <img src="{{ book_cover }}" width="120px" alt="{{ book['name'] }}_封面">
+        </a>
+        <span>提到的书籍：<a href="/book/{{ book['id'] }}">《{{ book['title'] }}》</a></span>
+    </span>
+    <footer>
+        <ul class="stats">
+            <li><a href="/profile/{{ journal['author_id'] }}">{{ author['account'] }}</a></li>
+            <li>
+                <a class="icon solid fa-heart" id="like_num" onclick="addLike()">{{ journal['like_num'] }}</a>
+            </li>
+            <li><i class="icon solid fa-comment" id="comment_num">{{ journal['comment_num'] }}</i></li>
+        </ul>
+    </footer>
+</article>

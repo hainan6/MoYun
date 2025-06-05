@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>书籍首页 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <h2 class="title">新书上架</h2>
+        <div class="mini-posts">
+            <!-- Posts -->
+            {% for book in books %}
+                <article class="mini-post">
+                    <header>
+                        <h2><a href="/book/{{ book['id'] }}">{{ book['title'] }}</a></h2>
+                        <div class="meta">
+                            {% if book['publish_date'] %}
+                                <p class="published">{{ book['publish_date'] }}</p>
+                            {% endif %}
+                            <a class="author">
+                                <span class="name" title="作者">{{ book['author'] }}</span>
+                            </a>
+                            <p>
+                                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
+                                    <a href="edit_book/{{ book['id'] }}" class="icon solid fa-cog">编辑书籍信息</a>
+                                {% endif %}
+                                {% if book['douban_id'] %}
+                                    <a href="https://book.douban.com/subject/{{ book['douban_id'] }}"
+                                       class="icon solid fa-book">豆瓣评分：{{ book['douban_score'] }}</a>
+                                {% endif %}
+                                {% if book['bangumi_id'] %}
+                                    <a href="https://bgm.tv/subject/{{ book['bangumi_id'] }}"
+                                       class="icon solid fa-book-open">Bangumi评分：{{ book['bangumi_score'] }}</a>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Intro -->
+        <section id="info">
+            <header>
+                <h2>书籍首页</h2>
+                <form id="search" method="get" action="/search">
+                    <label>
+                        <input type="hidden" name="type" id="type" value="book">
+                        <input type="text" placeholder="搜索书籍" name="keyword" id="keyword"/>
+                    </label>
+                </form>
+            </header>
+        </section>
+
+        <!-- Mini Posts -->
+        <section>
+            <div class="mini-posts">
+                <!-- Mini Post -->
+                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
+                    <article class="mini-post">
+                        <header>
+                            <h3><a href="/add_book">新增书籍</a></h3>
+                            <p>能力越大，责任越大</p>
+                        </header>
+                    </article>
+                {% endif %}
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/add_journal">写书评</a></h3>
+                        <p>有些想法？表达出来吧</p>
+                    </header>
+                </article>
+            </div>
+        </section>
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+</body>
+
+</html>

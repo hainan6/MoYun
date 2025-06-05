@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ discussion['title'] }} | 墨韵 - 帖子</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        <article class="post">
+            <header>
+                <div class="title">
+                    <h2><a href="/discussion/{{ discussion['id'] }}">{{ discussion['title'] }}</a></h2>
+                </div>
+                <div class="meta">
+                    <time class="published">{{ discussion['post_time'] }}</time>
+                    <a href="/profile/{{ author['id'] }}" class="author">
+                        <span class="name">{{ author['account'] }}</span>
+                        <img src="{{ author['profile_photo'] }}" alt="avatar">
+                    </a>
+                </div>
+            </header>
+
+            <!-- content -->
+            <span class="content">
+                <p>{{ discussion['content'] }}</p>
+            </span>
+        </article>
+
+        <!-- write reply -->
+        <div style="display: flex; width: 100%; align-items: stretch">
+            <input type="text" name="reply_content" id="reply_content" style="margin-right: 5px" placeholder="发表评论">
+            <button onclick="addReply()" style="margin-right: 5px">发布</button>
+            <button id="chatButton" type="button">AI辅助写作</button>
+        </div>
+    </div>
+    {% include '_chat_box.html' %}
+    <!-- Replies -->
+    <section style="margin: 5px;">
+        <ul class="posts" id="replies">
+            {% for reply in discussion_reply %}
+                <li>
+                    <article>
+                        <header>
+                            <h3>{{ reply['content'] }}</h3>
+                            <span class="published">{{ reply['reply_time'] }}</span>
+                        </header>
+                        <a href="/profile/{{ reply['author_id'] }}" class="image">
+                            <img src="{{ reply['profile_photo'] }}" title="{{ reply['account'] }}"
+                                 style="border-radius: 10%;" alt="{{ reply['account'] }}_头像"/>
+                        </a>
+                    </article>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+<script type="text/javascript">
+    function addReply() {
+        $.ajax({
+            type: 'POST',
+            url: '/discussion/{{ discussion['id'] }}',
+            dataType: 'json',
+            data: {
+                'reply_content': $('input[name="reply_content"]').val()
+            },
+            // 如果reply为空，则不发送请求
+            beforeSend: function () {
+                if ($('input[name="reply_content"]').val() === '') {
+                    document.getElementById('flask-info').innerHTML = '<div class="message">评论不能为空</div>';
+                    reloadFlaskInfo();
+                    return false;
+                }
+            },
+            success: function (response) {
+                const new_reply_element = document.createElement('li');
+                new_reply_element.innerHTML = '<article><header><h3>' + response.reply_content + '</h3><span class="published">' + response.reply_time + '</span></header><a href="/profile/' + response.author_id + '" class="image"><img src="' + response.author_profile_photo + '" title="' + response.account + '"style="border-radius: 10%;" alt="' + response.account + '_头像"/></a></article>';
+                document.getElementById('replies').append(new_reply_element)
+                document.getElementById('reply_content').value = '';
+                document.getElementById('flask-info').innerHTML = '<div class="message">评论成功</div>';
+                reloadFlaskInfo();
+                return true;
+            }
+        })
+    }
+</script>
+</body>
+
+</html>

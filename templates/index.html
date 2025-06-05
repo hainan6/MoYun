@@ -1,0 +1,1088 @@
+<!DOCTYPE HTML>
+<!--
+	Dimension by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/index/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    <!-- 引入Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <noscript>
+        <link rel="stylesheet" href="../static/assets/index/css/noscript.css"/>
+    </noscript>
+    <style>
+        /* 重置和基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰 */
+        .background-decoration {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: url('../static/images/index/bg.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .background-decoration::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            animation: backgroundPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* 主容器布局 */
+        .main-container {
+            display: flex;
+            min-height: 100vh;
+            max-height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 左侧内容区域 */
+        .left-panel {
+            flex: 1.3;
+            padding: 2rem 3rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* 左上角 - 平台介绍 */
+        .platform-intro {
+            flex: 1;
+            overflow: hidden;
+            color: #000;
+            padding-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 左下角 - 技术架构 */
+        .tech-section {
+            flex: 1;
+            color: #000;
+            overflow: hidden;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 右侧登录区域 */
+        .right-panel {
+            flex: 0.7;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.1) 0%, 
+                rgba(118, 75, 162, 0.1) 50%, 
+                rgba(64, 93, 230, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        /* 顶部标题栏 */
+        .header-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(12, 20, 41, 0.9);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .logo-text {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::before {
+            left: 100%;
+        }
+
+        /* 为左右面板添加顶部间距 */
+        .left-panel, .right-panel {
+            padding-top: 5.5rem;
+        }
+
+        /* 特色功能网格 - 更紧凑版 */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+            flex: 1;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 1rem 0.8rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(15px);
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.05) 0%, 
+                rgba(118, 75, 162, 0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        
+        .feature-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.6rem;
+            display: block;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+            line-height: 1.2;
+        }
+        
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.3;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        /* 技术栈网格 - 更紧凑版 */
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+            flex: 1;
+        }
+        
+        .tech-category {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-category::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+            transform: rotate(45deg);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .tech-category:hover::before {
+            opacity: 1;
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+
+        .tech-category:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tech-category h4 {
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tech-list li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .tech-list li:hover {
+            color: #ffffff;
+        }
+        
+        /* 登录表单样式 */
+        .form-enhanced {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-enhanced::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            right: -1px;
+            bottom: -1px;
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.3) 0%, 
+                rgba(118, 75, 162, 0.3) 50%, 
+                rgba(64, 93, 230, 0.3) 100%);
+            border-radius: 24px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-enhanced:hover::before {
+            opacity: 1;
+        }
+        
+        .form-enhanced .field {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-enhanced label {
+            display: block;
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 0.6rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-enhanced input {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .form-enhanced input:focus {
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(255, 255, 255, 0.12);
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+        }
+        
+        .form-enhanced input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .actions-enhanced {
+            text-align: center;
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            width: 100%;
+            min-height: 80px;
+            padding: 1rem 0;
+        }
+        
+        .btn-enhanced {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 2.5rem;
+            margin: 0;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            line-height: 1;
+            min-height: 50px;
+            position: relative;
+            overflow: hidden;
+            flex: 0 0 auto;
+            white-space: nowrap;
+            z-index: 1;
+        }
+
+        .btn-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.4s ease;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn-enhanced:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-primary-enhanced {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-primary-enhanced:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary-enhanced {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .btn-secondary-enhanced:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* 标题和介绍样式 - 更紧凑版 */
+        .intro-header {
+            text-align: center;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .intro-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .section-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 登录标题 */
+        .login-title {
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #a0aec0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+                max-height: none;
+                overflow: visible;
+            }
+            
+            .left-panel {
+                flex: none;
+                padding-top: 4rem;
+                display: block;
+                overflow: visible;
+            }
+            
+            .platform-intro, .tech-section {
+                overflow: visible;
+            }
+            
+            .tech-section {
+                border-top: none;
+                padding-top: 2rem;
+            }
+            
+            .right-panel {
+                flex: none;
+                padding: 3rem 2rem;
+                overflow: visible;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .feature-grid, .tech-stack {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+            
+            .header-bar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.8rem;
+            }
+
+            .form-enhanced {
+                padding: 2rem;
+                max-width: 320px;
+            }
+
+            .feature-card {
+                height: 160px;
+                padding: 1.2rem 1rem;
+            }
+
+            .tech-category {
+                height: 140px;
+                padding: 1rem;
+            }
+
+            .left-panel {
+                padding: 2rem;
+            }
+        }
+
+        /* 自定义滚动条 */
+        .platform-intro::-webkit-scrollbar,
+        .tech-section::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .platform-intro::-webkit-scrollbar-track,
+        .tech-section::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .platform-intro::-webkit-scrollbar-thumb,
+        .tech-section::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+        }
+
+        .platform-intro::-webkit-scrollbar-thumb:hover,
+        .tech-section::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+<!-- Background Decoration -->
+<div class="background-decoration"></div>
+
+<!-- Header Bar -->
+<div class="header-bar">
+    <div class="logo-section">
+        <div class="logo-icon">
+            <span class="fa fa-bookmark"></span>
+        </div>
+        <div class="logo-text">"墨韵"读书分享平台</div>
+    </div>
+    
+    <nav class="nav-links">
+        <a href="#register">新用户注册</a>
+        <a href="#findPasswd">找回密码</a>
+        <a href="https://github.com/Steven-Zhl/MoYun" target="_blank">GitHub</a>
+    </nav>
+</div>
+
+<!-- Main Container -->
+<div class="main-container">
+    <!-- 消息闪现 -->
+    <div class="flask-info">
+        {% for message in get_flashed_messages() %}
+            <div class="alert">{{ message }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Left Panel - 分为上下两部分 -->
+    <div class="left-panel">
+        <!-- 上半部分 - 平台介绍 -->
+        <div class="platform-intro">
+            <section>
+                <div class="intro-header">
+                    <h2 class="section-title">平台介绍</h2>
+                </div>
+                
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">📚</span>
+                        <h3 class="feature-title">丰富书库</h3>
+                        <p class="feature-desc">汇聚各类优质书籍，涵盖文学、科技、历史等多个领域。</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">💬</span>
+                        <h3 class="feature-title">深度交流</h3>
+                        <p class="feature-desc">与志同道合的书友分享读后感，交流心得体会。</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🎯</span>
+                        <h3 class="feature-title">个性推荐</h3>
+                        <p class="feature-desc">基于智能算法，推荐最适合的书籍和内容。</p>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">⭐</span>
+                        <h3 class="feature-title">品质保证</h3>
+                        <p class="feature-desc">精选优质内容，营造良好的阅读分享环境。</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 下半部分 - 技术架构 -->
+        <div class="tech-section">
+            <section>
+                <div class="intro-header">
+                    <h2 class="section-title">技术架构</h2>
+                </div>
+
+                <div class="tech-stack">
+                    <div class="tech-category">
+                        <h4>🎨 前端技术</h4>
+                        <ul class="tech-list">
+                            <li>HTML5 & CSS3 JavaScript & Ajax </li>
+                        </ul>
+                    </div>
+                    <div class="tech-category">
+                        <h4>⚙️ 后端技术</h4>
+                        <ul class="tech-list">
+                            <li>Python、Flask 框架、SQLAlchemy ORM、RESTful API</li>
+                        </ul>
+                    </div>
+                    <div class="tech-category">
+                        <h4>💾 数据存储</h4>
+                        <ul class="tech-list">
+                            <li>MySQL、Redis</li>
+                        </ul>
+                    </div>
+                    <div class="tech-category">
+                        <h4>🔧 开发工具</h4>
+                        <ul class="tech-list">
+                            <li>Vscode</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Right Panel - 登录界面 -->
+    <div class="right-panel">
+        <div>
+            <h2 class="login-title">用户登录</h2>
+            <!-- <p class="login-subtitle">欢迎回到墨韵，继续您的阅读之旅</p> -->
+
+            <div class="form-enhanced">
+                <form method="post" action="/">
+                    <div class="field">
+                        <label for="login-account">账号 / Account</label>
+                        <input type="text" name="account" id="login-account" placeholder="请输入您的账号" required/>
+                    </div>
+                    <div class="field">
+                        <label for="login-password">密码 / Password</label>
+                        <input type="password" name="password" id="login-password" placeholder="请输入您的密码" required/>
+                    </div>
+                    <div class="actions-enhanced">
+                        <input type="submit" value="立即登录" class="btn-enhanced btn-primary-enhanced"/>
+                        <input type="reset" value="清空内容" class="btn-enhanced btn-secondary-enhanced"/>
+                    </div>
+                </form>
+                
+                <div style="text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.15);">
+                    <p style="color: rgba(255,255,255,0.7); margin-bottom: 0.6rem;">
+                        忘记密码？<a href="#findPasswd" style="color: #667eea; text-decoration: none; font-weight: 500;">点击找回</a>
+                    </p>
+                    <p style="color: rgba(255,255,255,0.7);">
+                        还没有账号？<a href="#register" style="color: #667eea; text-decoration: none; font-weight: 500;">立即注册</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden sections for modal display -->
+<div style="display: none;">
+    <!-- Register -->
+    <article id="register">
+        <h2 class="major">新用户注册</h2>
+        <div class="intro-header">
+            <p class="intro-subtitle">加入墨韵大家庭，开启您的读书分享之旅</p>
+        </div>
+
+        <div class="form-enhanced">
+            <form method="post" action="/register">
+                <div class="field">
+                    <label for="register-account">账号 / Account</label>
+                    <input type="text" name="account" id="register-account" placeholder="设置一个独特的账号名" required/>
+                </div>
+                <div class="field">
+                    <label for="register-password">密码 / Password</label>
+                    <input type="password" name="password" id="register-password" placeholder="设置一个安全的密码" required/>
+                </div>
+                <div class="field">
+                    <label for="register-email">电子邮箱 / E-mail</label>
+                    <input type="email" name="email" id="register-email" placeholder="您的常用邮箱地址" required/>
+                </div>
+                <div class="field">
+                    <label for="register-telephone">联系电话 / Telephone</label>
+                    <input type="tel" name="telephone" id="register-telephone" placeholder="您的手机号码" required/>
+                </div>
+                <div class="actions-enhanced">
+                    <input type="submit" value="创建账户" class="btn-enhanced btn-primary-enhanced"/>
+                    <input type="reset" value="清空内容" class="btn-enhanced btn-secondary-enhanced"/>
+                </div>
+            </form>
+            
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p style="color: rgba(255,255,255,0.7);">
+                    已有账号？<a href="#login" style="color: #667eea; text-decoration: none;">立即登录</a>
+                </p>
+            </div>
+        </div>
+    </article>
+
+    <!-- Find Password -->
+    <article id="findPasswd">
+        <h2 class="major">找回密码</h2>
+        <div class="intro-header">
+            <p class="intro-subtitle">我们将向您的预留邮箱发送验证码，请注意查收</p>
+        </div>
+
+        <div class="form-enhanced">
+            <!-- 步骤1: 获取验证码 -->
+            <div style="margin-bottom: 3rem;">
+                <h3 style="color: #ffffff; margin-bottom: 1rem; font-size: 1.2rem;">步骤1: 获取验证码</h3>
+                <form method="post" id="sendCaptcha" action="/sendCaptcha">
+                    <div class="field">
+                        <label for="find-account">账号 / Account</label>
+                        <input type="text" name="account" id="find-account" placeholder="请输入您的账号" required/>
+                    </div>
+                    <div class="actions-enhanced">
+                        <input type="submit" value="发送验证码" class="btn-enhanced btn-primary-enhanced"/>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 步骤2: 重置密码 -->
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 3rem;">
+                <h3 style="color: #ffffff; margin-bottom: 1rem; font-size: 1.2rem;">步骤2: 重置密码</h3>
+                <form method="post" action="/resetPasswd">
+                    <div class="field">
+                        <label for="reset-captcha">验证码 / Captcha</label>
+                        <input type="text" name="captcha" id="reset-captcha" placeholder="请输入邮箱收到的验证码" required/>
+                    </div>
+                    <div class="field">
+                        <label for="reset-password">新密码 / New Password</label>
+                        <input type="password" name="password" id="reset-password" placeholder="设置新的密码" required/>
+                    </div>
+                    <div class="actions-enhanced">
+                        <input type="submit" value="修改密码" class="btn-enhanced btn-primary-enhanced"/>
+                    </div>
+                </form>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+                <p style="color: rgba(255,255,255,0.7);">
+                    想起密码了？<a href="#login" style="color: #667eea; text-decoration: none;">返回登录</a>
+                </p>
+            </div>
+        </div>
+    </article>
+</div>
+
+<!-- Scripts -->
+<script src="../static/assets/index/js/jquery.min.js"></script>
+<script src="../static/assets/index/js/browser.min.js"></script>
+<script src="../static/assets/index/js/breakpoints.min.js"></script>
+<script src="../static/assets/index/js/util.js"></script>
+<script src="../static/assets/index/js/main.js"></script>
+
+<script>
+// 简单的模态框功能，用于注册和找回密码
+document.addEventListener('DOMContentLoaded', function() {
+    // 为注册和找回密码链接添加点击事件
+    const registerLinks = document.querySelectorAll('a[href="#register"]');
+    const findPasswdLinks = document.querySelectorAll('a[href="#findPasswd"]');
+    
+    registerLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showModal('register');
+        });
+    });
+    
+    findPasswdLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            showModal('findPasswd');
+        });
+    });
+    
+    function showModal(type) {
+        // 创建模态框
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(15px);
+            animation: fadeIn 0.3s ease;
+        `;
+        
+        const content = document.getElementById(type).cloneNode(true);
+        content.style.cssText = `
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 3rem;
+            border-radius: 24px;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+        `;
+        
+        // 添加关闭按钮
+        const closeBtn = document.createElement('button');
+        closeBtn.innerHTML = '×';
+        closeBtn.style.cssText = `
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        `;
+        
+        closeBtn.addEventListener('mouseenter', () => {
+            closeBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+        });
+        
+        closeBtn.addEventListener('mouseleave', () => {
+            closeBtn.style.background = 'none';
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            modal.style.animation = 'fadeOut 0.3s ease';
+            content.style.animation = 'slideDown 0.3s ease';
+            setTimeout(() => {
+                if (document.body.contains(modal)) {
+                    document.body.removeChild(modal);
+                }
+            }, 300);
+        });
+        
+        content.appendChild(closeBtn);
+        modal.appendChild(content);
+        document.body.appendChild(modal);
+        
+        // 点击背景关闭
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeBtn.click();
+            }
+        });
+        
+        // 添加动画样式
+        if (!document.querySelector('#modal-animations')) {
+            const style = document.createElement('style');
+            style.id = 'modal-animations';
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes fadeOut {
+                    from { opacity: 1; }
+                    to { opacity: 0; }
+                }
+                @keyframes slideUp {
+                    from { transform: translateY(30px); opacity: 0; }
+                    to { transform: translateY(0); opacity: 1; }
+                }
+                @keyframes slideDown {
+                    from { transform: translateY(0); opacity: 1; }
+                    to { transform: translateY(30px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+});
+</script>
+
+</body>
+
+</html>

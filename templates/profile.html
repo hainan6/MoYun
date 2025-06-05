@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ user['account'] }} | 个人空间 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <h2 class="title">近期书评</h2>
+        <div class="mini-posts">
+            <!-- Posts -->
+            {% for journal in journals %}
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a></h3>
+                        <div class="meta">
+                            <p class="published">{{ journal['publish_time'] }}</p>
+                            <a href="/profile/{{ user['id'] }}" class="author">
+                                <span class="name">{{ user['account'] }}</span>
+                            </a>
+                            <p>
+                                <a class="icon solid fa-heart">{{ journal['like_num'] }}</a>
+                                <a class="icon solid fa-comment">{{ journal['comment_num'] }}</a>
+                            </p>
+                        </div>
+                    </header>
+                </article>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Intro -->
+        <section id="info">
+            <header>
+                <h2>个人空间</h2>
+                <table>
+                    <tr>
+                        <td>
+                            <img src="{{ profile_photo }}" alt="头像"
+                                 style="height:100px; width: 100px; border-radius: 10px"/>
+                        </td>
+                        <td style="vertical-align: middle;font-weight: bold;font-size: large">
+                            {{ user['account'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>签名</td>
+                        <td>{{ user['signature'] }}</td>
+                    </tr>
+                    {% if user['email'] %}
+                        <tr>
+                            <td>邮箱</td>
+                            <td>{{ user['email'] }}</td>
+                        </tr>
+                    {% endif %}
+                    {% if user['telephone'] %}
+                        <tr>
+                            <td>电话</td>
+                            <td>{{ user['telephone'] }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td>用户组</td>
+                        {% if user['role']=='student' %}
+                            <td>学生</td>
+                        {% elif user['role']=='teacher' %}
+                            <td>教师</td>
+                        {% elif user['role']=='admin' %}
+                            <td>管理员</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% if login_user['id'] == user['id'] %}
+                    <button type="submit" onclick="location.href=('/edit_profile')">修改个人信息</button>
+                {% endif %}
+            </header>
+        </section>
+
+        {% if user['id']!=login_user['id'] %}
+            <section>
+                <div class="mini-posts">
+                    <!-- Mini Post -->
+                    <article class="mini-post">
+                        <header>
+                            <h3><a href="/chat/{{ user['id'] }}">开始聊天</a></h3>
+                            <p>请记得礼貌用语哦</p>
+                        </header>
+                    </article>
+                </div>
+            </section>
+        {% endif %}
+
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+</body>
+
+</html>

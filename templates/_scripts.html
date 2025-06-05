@@ -1,0 +1,13 @@
+<script src="../static/assets/home/js/jquery.min.js"></script>
+<script src="../static/assets/home/js/browser.min.js"></script>
+<script src="../static/assets/home/js/breakpoints.min.js"></script>
+<script src="../static/assets/home/js/util.js"></script>
+<script src="../static/assets/home/js/main.js"></script>
+<script type="text/javascript">
+    function reloadFlaskInfo() {
+        const flaskInfo = document.getElementById('flask-info');
+        flaskInfo.style.animation = 'none';
+        void flaskInfo.offsetHeight; // 触发重排
+        flaskInfo.style.animation = "hideDiv 8s forwards";
+    }
+</script>

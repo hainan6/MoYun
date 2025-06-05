@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>书评首页 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <h2 class="title">最近书评</h2>
+        <div class="mini-posts">
+            <!-- Posts -->
+            {% for journal in journals %}
+                {% include '_journal_article.html' %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Intro -->
+        <section id="info">
+            <header>
+                <h2>书评首页</h2>
+                <form id="search" method="get" action="/search">
+                    <label>
+                        <input type="hidden" name="type" id="type" value="journal">
+                        <input type="text" placeholder="搜索书评" name="keyword" id="keyword"/>
+                    </label>
+                </form>
+            </header>
+        </section>
+
+        <!-- Mini Posts -->
+        <section>
+            <div class="mini-posts">
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/add_journal">写书评</a></h3>
+                        <p>有些想法？表达出来吧</p>
+                    </header>
+                </article>
+            </div>
+        </section>
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+
+</body>
+
+</html>

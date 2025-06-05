@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ group['name'] }} | 圈子 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="{{ group['group_icon'] }}" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        {% for discussion in discussions %}
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <h2><a href="/discussion/{{ discussion['id'] }}">{{ discussion['title'] }}</a></h2>
+                    </div>
+                    <div class="meta">
+                        <span class="published">{{ discussion['post_time'] }}</span>
+                        <a href="/profile/{{ discussion['poster_id'] }}" class="author">
+                            <span class="name">{{ discussion['account'] }}</span>
+                        </a>
+                    </div>
+                </header>
+                <p>{{ discussion['content'] }}</p>
+                <footer>
+                    <ul class="actions">
+                        <li><a href="/discussion/{{ discussion['id'] }}" class="button large">查看全部</a></li>
+                    </ul>
+                    <ul class="stats">
+                        <li><a href="/account/{{ discussion['poster_id'] }}">{{ discussion['account'] }}</a></li>
+                        <li><i class="icon solid fa-comment">{{ discussion['reply_num'] }}</i></li>
+                    </ul>
+                </footer>
+            </article>
+        {% endfor %}
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+
+        <!-- Intro -->
+        <section id="intro">
+            <header>
+                <h2>{{ group['name'] }}</h2>
+                <img src="{{ group['group_icon'] }}" alt="{{ group['name'] }}_logo"
+                     style="border-radius: 10%;margin: 5%;width: 200px; height: 200px;">
+            </header>
+
+            <table>
+                <tbody>
+                <tr>
+                    <td>版主</td>
+                    <td><a href="/profile/{{ group['founder_id'] }}">{{ group['account'] }}</a></td>
+                </tr>
+                <tr>
+                    <td>创建时间</td>
+                    <td>{{ group['establish_time'] }}</td>
+                </tr>
+                <tr>
+                    <td>圈子介绍</td>
+                    <td>{{ group['description'] }}</td>
+                </tr>
+                <tr>
+                    <td>当前身份</td>
+                    <td>{% if login_user['id']==group['founder_id'] %}版主{% else %}普通用户{% endif %}</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mini-posts">
+            <article class="mini-post">
+                <header>
+                    <h3><a href="/add_discussion/{{ group['id'] }}">发表新帖</a></h3>
+                    <p>学而不思则罔，思而不学则殆。</p>
+                </header>
+            </article>
+
+            <article class="mini-post">
+                <header>
+                    <h3><a href="/add_group">创建圈子</a></h3>
+                    <p>你所热爱的，就是你的生活！</p>
+                </header>
+            </article>
+
+            {% if login_user['id']==group['founder_id'] %}
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/edit_group/{{ group['id'] }}">编辑圈子信息</a></h3>
+                        <p>能力越大，责任越大。</p>
+                    </header>
+                </article>
+            {% endif %}
+        </section>
+
+        <!-- Posts List -->
+        <section>
+            <h2>最近回复</h2>
+            <ul class="posts">
+                {% for reply in replies %}
+                    <li>
+                        <article>
+                            <header>
+                                <h3>
+                                    <a href="/discussion/{{ reply['discussion_id'] }}">{{ reply['account'] }}：{{ reply['content'] }}</a>
+                                </h3>
+                                <time class="published">{{ reply['reply_time'] }}</time>
+                            </header>
+                            <a href="/profile/{{ reply['author_id'] }}">
+                                <img src="{{ reply['profile_photo'] }}" style="border-radius: 10%;margin: 10px"
+                                     width="50px" height="50px">
+                            </a>
+                        </article>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section id="member">
+            <h2>当前成员：</h2>
+            <!-- Post -->
+            {% for user in group_users %}
+                <article class="mini-post">
+                    <header>
+                        <h3>
+                            <a href="/profile/{{ user['user_id'] }}">{{ user['account'] }}</a>
+                            {% if user['user_id']==group['founder_id'] %}
+                                {% include '_badge_founder.html' %}
+                            {% else %}
+                                {% include '_badge_user.html' %}
+                            {% endif %}
+                        </h3>
+                        <time class="published" datetime="{{ user['join_time'] }}">
+                            加入时间：{{ user['join_time'] }}
+                        </time>
+                        <a href="/profile/{{ user['user_id'] }}" class="author">
+                            <img src="{{ user['profile_photo'] }}" alt="{{ user['account'] }}_头像">
+                        </a>
+                    </header>
+                </article>
+            {% endfor %}
+        </section>
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+<style>
+    .badge-container {
+        display: inline-flex;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 4px;
+        font-size: 0.8em;
+        font-weight: bold;
+        color: white;
+    }
+
+    .badge-left {
+        background-color: #222222;
+        margin-right: 0;
+    }
+
+    .badge-right {
+        margin-left: 0;
+    }
+
+    .badge-right.user {
+        background-color: dodgerblue;
+    }
+
+    .badge-right.founder {
+        background-color: goldenrod;
+    }
+</style>
+</body>
+
+</html>

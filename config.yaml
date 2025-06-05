@@ -1,0 +1,60 @@
+#数据库配置(仅可用MySQL)
+Database:
+  Type: "MySQL" # 数据库类型
+  Driver: "pymysql" # 数据库驱动
+  Host: "localhost" # 数据库地址
+  Port: 3306 # 数据库端口
+  Database: "moyun" #数据库名
+  Account: "root" # 数据库管理员账号
+  Password: "1234" # 数据库管理员密码
+
+# 平台管理员账号
+Admin:
+  Account: "MoYun_Admin" # 管理员账号
+  Password: "MoYun_Admin" # 管理员密码
+  ID: 1 # 管理员ID，一般1号用户为管理员
+  # 以下是profile页的一些外显的个人信息，不写的留空即可
+  E-Mail: ""
+  Telephone: ""
+  Signature: "道阻且长" # 管理员签名(可以理解为类似于QQ签名的东西)
+  ProfilePhoto: "" # 请在此指定管理员头像的路径
+
+# 邮箱服务配置
+E-Mail:
+  Host: "smtp.126.com" # smtp邮箱服务器，如“smtp.126.com”
+  Port: 465 # smtp端口，常用的有25和465
+  Username: "" # 用于在邮箱服务器上登录的账号，通常默认为完整的邮箱“admin@126.com”
+  Password: "" # 发件人SMTP密钥(通常不是邮箱密码，而是邮箱服务商提供的一串密钥)
+  Sender: "" # 完整邮箱，如“admin@126.com”
+
+# Flask配置
+Flask:
+  SECRET_KEY: "MoYun" # Flask混淆密钥，用于session加密
+  JSON_AS_ASCII: False # Flask返回json时是否使用ascii编码，False才可保证中文不乱码
+  PERMANENT_SESSION_LIFETIME: 86400 # session有效期，单位秒，默认1天
+  Port: 5000 # Flask运行端口，默认5000
+
+# 项目路径配置(如不修改项目结构，则无需修改)
+Path:
+  TemplateFolder: "/templates" # 模板文件夹
+  StaticFolder: "/static" # 静态资源文件夹
+  StoragePath: "/static" # 存储文件夹，默认与静态资源共用同一个文件夹
+  ErrorImageSource: "HTTP Cats" # 网站出现错误时的图片来源，可选："local", "HTTP Cats"，前者表示使用本地图片，后者表示使用<https://http.cat>的图片
+
+# Redis配置(在Windows下建议使用memurai替代)
+Redis:
+  host: "localhost" # Redis地址
+  port: 6379 # Redis端口
+  database: 0 # Redis数据库
+  password: "" # Redis密码
+
+
+# API配置
+Yiketianqi: # 一刻天气API
+  version: "v61"
+  appid: "13254596"
+  appsecret: "Xuys93ne"
+
+Qwen: # 阿里 通义千问API
+  api_key: "sk-6fefbc81e40c4aca8cd56cc0edc2b784" # API_KEY
+  model: "qwen-max" # 调用的模型

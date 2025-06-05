@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ book['title'] }} | 书籍 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <!-- Post -->
+        <article class="post">
+            <header>
+                <div class="title">
+                    <h2>{{ book['title'] }}</h2>
+                    {% if book['origin_title'] %}
+                        <h3>{{ book['origin_title'] }}</h3>
+                    {% endif %}
+                    {% if book['subtitle'] %}
+                        <h3>{{ book['subtitle'] }}</h3>
+                    {% endif %}
+                    <h2>{{ book['author'] }}</h2>
+                </div>
+                <div class="meta">
+                    <a href="https://book.douban.com/subject/{{ book['douban_id'] }}">
+                        <img src="{{ book_cover }}" style="horiz-align: center; border-radius: 5%; width: 150px;"
+                             alt="{{ book['title'] }}_封面">
+                    </a>
+                </div>
+            </header>
+
+            {% for p in book['description'].split('\n') %}
+                <p>{{ p }}</p>
+            {% endfor %}
+        </article>
+    </div>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+        <!-- Mini Posts -->
+        <section>
+            <span class="intro">
+                    <table style="horiz-align: center;">
+                        <tr>
+                            <td>标题</td>
+                            <td>{{ book['title'] }}</td>
+                        </tr>
+                        {% if book['subtitle'] %}
+                            <tr>
+                            <td>副标题</td>
+                            <td>{{ book['subtitle'] }}</td>
+                        </tr>
+                        {% endif %}
+                        {% if book['origin_title'] %}
+                            <tr>
+                            <td>原标题</td>
+                            <td>{{ book['origin_title'] }}</td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td>作者</td>
+                            <td>{{ book['author'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>页数</td>
+                            <td>{{ book['page'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>出版社</td>
+                            <td>{{ book['publisher'] }}</td>
+                        </tr>
+                        {% if book['publish_date'] %}
+                            <tr>
+                                <td>出版日期</td>
+                                <td>{{ book['publish_date'] }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>豆瓣评分</td>
+                            <td><a href="https://book.douban.com/subject/{{ book['douban_id'] }}">{{ book['douban_score'] }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>类型</td>
+                            <td>{{ book['type'] }}</td>
+                        </tr>
+                        <tr>
+                            <td>ISBN</td>
+                            <td>{{ book['isbn'] }}</td>
+                        </tr>
+                    </table>
+                </span>
+
+            <div class="mini-posts">
+                <!-- Mini Post -->
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/add_journal">写书评</a></h3>
+                        <p>有些想法？表达出来吧</p>
+                    </header>
+                </article>
+
+                <article class="mini-post">
+                    <header>
+                        <h3><a href="/search?type=journal&keyword={{ book['title'] }}">相关书评</a></h3>
+                        <p>看看其他人怎么评价的吧</p>
+                    </header>
+                </article>
+
+                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
+                    <article class="mini-post">
+                        <header>
+                            <h3><a href="/edit_book/{{ book['id'] }}">编辑书籍信息</a></h3>
+                            <p>能力越大，责任越大</p>
+                        </header>
+                    </article>
+                {% endif %}
+            </div>
+        </section>
+
+        <!-- About -->
+        {% include '_about.html' %}
+    </section>
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+</body>
+
+</html>
