@@ -140,7 +140,7 @@
 
 ```bash
 # 方式一：Git克隆（推荐）
-git clone https://github.com/Steven-Zhl/MoYun.git
+git clone https://github.com/hainan6/MoYun.git
 cd MoYun
 
 # 方式二：下载压缩包并解压
