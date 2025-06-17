@@ -84,6 +84,23 @@ def journalResponse(app: Flask, file_manager: FileManager, db: Database):
                     return {"like_num": like_num + 1, "is_liked": False}
                 else:
                     return {"like_num": like_num, "is_liked": True}
+            elif "delete_journal" in data:  # 删除书评
+                # 检查用户是否登录
+                login_user = session.get("login_user")
+                if not login_user:
+                    return jsonify({"status": "error", "message": "请先登录"})
+                
+                # 任何登录用户都可以删除书评
+                current_user_id = login_user["id"]
+                
+                # 删除书评封面图片
+                file_manager.deleteJournalHeader(journal_id)
+                
+                # 删除数据库记录（不进行作者验证）
+                if db.deleteJournal(journal_id):
+                    return jsonify({"status": "success", "message": "书评删除成功"})
+                else:
+                    return jsonify({"status": "error", "message": "删除失败，请重试"})
 
     @app.route("/add_journal", methods=["GET", "POST"])
     def add_journal():

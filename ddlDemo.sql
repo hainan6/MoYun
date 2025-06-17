@@ -347,6 +347,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+-- 创建一个用户，用户名：admin，密码：123456，角色：admin
+INSERT INTO `user` (`account`, `password`, `role`) VALUES ('admin', '123456', 'admin');
+-- 创建一个用户，用户名：teacher，密码：123456，角色：teacher
+INSERT INTO `user` (`account`, `password`, `role`) VALUES ('teacher', '111', 'teacher');
+-- 创建一个用户，用户名：student，密码：123456，角色：student
+INSERT INTO `user` (`account`, `password`, `role`) VALUES ('student', '20221050006', 'student');
+
+
 --
 -- Dumping data for table `user`
 --

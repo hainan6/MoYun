@@ -208,6 +208,53 @@ class User(db.Model):
         self.role = role
 
 
+class Teacher(User):
+    """导师 表 数据模型"""
+    __tablename__ = 'teacher'
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    title = db.Column(db.String(32), unique=False)  # 职称
+    department = db.Column(db.String(64), unique=False)  # 所属院系
+    research_direction = db.Column(db.String(128), unique=False)  # 研究方向
+    introduction = db.Column(db.Text, unique=False)  # 个人简介
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), unique=True)  # 导师创建的圈子ID
+
+    def __init__(self, account: str, password: str, signature: str, email: str, telephone: str,
+                 title: str = None, department: str = None, research_direction: str = None,
+                 introduction: str = None):
+        super().__init__(account, password, signature, email, telephone, "teacher")
+        self.title = title
+        self.department = department
+        self.research_direction = research_direction
+        self.introduction = introduction
+
+
+class Student(User):
+    """学生 表 数据模型"""
+    __tablename__ = 'student'
+    id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    student_id = db.Column(db.String(32), unique=True)  # 学号
+    grade = db.Column(db.String(32), unique=False)  # 年级
+    major = db.Column(db.String(64), unique=False)  # 专业
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), unique=False)  # 导师ID
+    join_time = db.Column(db.DateTime, unique=False)  # 加入导师圈子的时间
+
+    def __init__(self, account: str, password: str, signature: str, email: str, telephone: str,
+                 student_id: str, grade: str = None, major: str = None, teacher_id: int = None,
+                 join_time: Union[str, datetime] = None):
+        super().__init__(account, password, signature, email, telephone, "student")
+        self.student_id = student_id
+        self.grade = grade
+        self.major = major
+        self.teacher_id = teacher_id
+        if not join_time:
+            self.join_time = None
+        else:
+            if isinstance(join_time, datetime):
+                self.join_time = join_time
+            else:
+                self.join_time = datetime.strptime(join_time, "%Y-%m-%d %H:%M:%S")
+
+
 class Journal(db.Model):
     """书评 表 数据模型"""
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

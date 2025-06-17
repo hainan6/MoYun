@@ -1,5 +1,5 @@
 """数据库工具，主要提供信息解析服务，所有从数据库提取数据的函数都在这里实现"""
-from typing import TypedDict
+from typing import TypedDict, Union
 
 from service.database.Model import *
 
@@ -305,3 +305,69 @@ class UnreadMessagesDict(TypedDict):
     group_discussions: list[GroupDiscussionDict]
     discussion_replies: list[GroupDiscussionReplyDict]
     chats: list[ChatDict]
+
+
+class TeacherDict(TypedDict):
+    """用以描述Teacher的数据结构(表单)，方法之前传递Teacher时需要将其作为返回值"""
+    id: int
+    account: str
+    password: Union[str, None]
+    signature: str
+    email: str
+    telephone: str
+    role: str
+    title: str
+    department: str
+    research_direction: str
+    introduction: str
+    group_id: Union[int, None]
+
+
+def extractTeacher(teacher: Teacher, with_password: bool = False) -> TeacherDict:
+    """
+    提取导师信息
+    :param teacher: 导师对象
+    :param with_password: 返回值是否包含密码
+    """
+    base_dict = extractUser(teacher, with_password)
+    return TeacherDict(
+        **base_dict,
+        title=teacher.title if teacher.title else "",
+        department=teacher.department if teacher.department else "",
+        research_direction=teacher.research_direction if teacher.research_direction else "",
+        introduction=teacher.introduction if teacher.introduction else "",
+        group_id=teacher.group_id
+    )
+
+
+class StudentDict(TypedDict):
+    """用以描述Student的数据结构(表单)，方法之前传递Student时需要将其作为返回值"""
+    id: int
+    account: str
+    password: Union[str, None]
+    signature: str
+    email: str
+    telephone: str
+    role: str
+    student_id: str
+    grade: str
+    major: str
+    teacher_id: Union[int, None]
+    join_time: str
+
+
+def extractStudent(student: Student, with_password: bool = False) -> StudentDict:
+    """
+    提取学生信息
+    :param student: 学生对象
+    :param with_password: 返回值是否包含密码
+    """
+    base_dict = extractUser(student, with_password)
+    return StudentDict(
+        **base_dict,
+        student_id=student.student_id,
+        grade=student.grade if student.grade else "",
+        major=student.major if student.major else "",
+        teacher_id=student.teacher_id,
+        join_time=student.join_time.strftime("%Y-%m-%d %H:%M:%S") if student.join_time else ""
+    )

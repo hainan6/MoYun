@@ -213,6 +213,30 @@ class Database:
         self.cache.setJournal(res)
         return res
 
+    def deleteJournal(self, journal_id: int) -> bool:
+        """
+        删除书评
+        :param journal_id: 书评id
+        :return: 是否成功删除
+        """
+        try:
+            journal = Journal.query.filter_by(id=journal_id).first()
+            if not journal:
+                return False
+            
+            # 删除数据库记录（关联的评论和点赞会因为CASCADE自动删除）
+            db.session.delete(journal)
+            db.session.commit()
+            
+            # 清除缓存
+            self.cache.deleteJournal(journal_id)
+            
+            return True
+        except Exception as e:
+            db.session.rollback()
+            print(f"删除书评时出错: {e}")
+            return False
+
     """JournalComment相关"""
 
     def addJournalComment(

@@ -10,8 +10,395 @@
     <title>发帖 | 墨韵 - {{ group['name'] }}</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
     <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 全局样式优化 - 与home.html保持一致 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* 发帖表单卡片 */
+        .post-form-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .post-form-card:hover {
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 表单头部 */
+        .form-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .form-header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .form-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        /* 表单主体 */
+        .form-body {
+            padding: 2.5rem;
+        }
+
+        /* 表单字段样式 */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-family: inherit;
+            background: var(--white);
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+            background: var(--white);
+        }
+
+        .form-control::placeholder {
+            color: #a0a5b8;
+            opacity: 1;
+        }
+
+        /* 标题输入框特殊样式 */
+        .title-input {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+        }
+
+        /* 内容文本域样式 */
+        .content-textarea {
+            min-height: 200px;
+            resize: vertical;
+            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* 用户信息区域 */
+        .author-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .author-info .published {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-right: auto;
+        }
+
+        .author-info .author {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .author-info .author:hover {
+            color: #667eea;
+        }
+
+        /* 按钮样式 */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .btn-primary-modern {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border: none;
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-primary-modern:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 108, 247, 0.3);
+        }
+
+        .btn-secondary-modern {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            border: none;
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .btn-secondary-modern:hover {
+            background: linear-gradient(135deg, #48bb78 0%, var(--accent-color) 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(28, 200, 138, 0.3);
+        }
+
+        /* 现代化卡片样式 */
+        .modern-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 图标样式 */
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+
+            .form-header {
+                padding: 1.5rem;
+            }
+
+            .form-title {
+                font-size: 1.5rem;
+            }
+
+            .form-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .form-body {
+                padding: 1.5rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-primary-modern,
+            .btn-secondary-modern {
+                width: 100%;
+                justify-content: center;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #main {
+                padding: 1rem 0;
+            }
+
+            .content-wrapper {
+                padding: 0 0.75rem;
+            }
+
+            .form-header {
+                padding: 1.25rem;
+            }
+
+            .form-title {
+                font-size: 1.3rem;
+            }
+
+            .form-body {
+                padding: 1.25rem;
+            }
+
+            .title-input {
+                font-size: 1.1rem;
+                padding: 1rem;
+            }
+
+            .content-textarea {
+                min-height: 150px;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 简洁的加载效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 聊天按钮特殊处理 */
+        #chatButton {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+        }
+
+        #chatButton:hover {
+            background: #48bb78;
+        }
+    </style>
 </head>
 
 <body class="single is-preload">
@@ -26,36 +413,165 @@
     {% include '_menu.html' %}
 
     <!-- Main -->
-    <div id="main">
-        <!-- Post -->
-        <form action="/add_discussion/{{ group['id'] }}" method="post" enctype="multipart/form-data">
-            <article class="post">
-                <header>
-                    <div class="title">
-                        <label><input type="text" name="title" placeholder="要讨论些什么？"></label>
+    <div id="main" class="container-fluid">
+        <div class="content-wrapper">
+            <!-- 发帖表单主区域 -->
+            <div class="post-form-card fade-in">
+                <!-- 表单头部 -->
+                <div class="form-header">
+                    <div class="form-header-content">
+                        <h1 class="form-title">
+                            <i class="fas fa-edit me-3"></i>发表新帖
+                        </h1>
+                        <p class="form-subtitle">
+                            在{{ group['name'] }}中分享你的想法和见解
+                        </p>
                     </div>
-                    <div class="meta">
-                        <span class="published">此处将会显示发布时间</span>
-                        <a href="/profile/{{ login_user['id'] }}" class="author">
-                            <span class="name">{{ login_user['account'] }}</span>
-                        </a>
+                </div>
+
+                <!-- 表单主体 -->
+                <form action="/add_discussion/{{ group['id'] }}" method="post" enctype="multipart/form-data">
+                    <div class="form-body">
+                        <!-- 用户信息 -->
+                        <div class="author-info">
+                            <i class="fas fa-clock icon-gradient me-2"></i>
+                            <span class="published">此处将会显示发布时间</span>
+                            <a href="/profile/{{ login_user['id'] }}" class="author">
+                                <i class="fas fa-user me-1"></i>
+                                {{ login_user['account'] }}
+                            </a>
+                        </div>
+
+                        <!-- 标题输入 -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-heading me-2 icon-gradient"></i>讨论主题
+                            </label>
+                            <input type="text" 
+                                   name="title" 
+                                   class="form-control title-input" 
+                                   placeholder="要讨论些什么？" 
+                                   required>
+                        </div>
+
+                        <!-- 内容输入 -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-file-alt me-2 icon-gradient"></i>帖子内容
+                            </label>
+                            <textarea name="content" 
+                                      id="content" 
+                                      class="form-control content-textarea" 
+                                      placeholder="分享你的想法，让大家一起讨论..." 
+                                      rows="8"
+                                      required></textarea>
+                        </div>
+
+                        <!-- 表单操作按钮 -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-primary-modern">
+                                <i class="fas fa-paper-plane me-2"></i>发布帖子
+                            </button>
+                            <button id="chatButton" type="button" class="btn-secondary-modern">
+                                <i class="fas fa-robot me-2"></i>AI辅助写作
+                            </button>
+                        </div>
                     </div>
-                </header>
-                <!-- content -->
-                <label class="content">
-                    <textarea name="content" id="content" placeholder="帖子正文" rows="6"></textarea>
-                </label>
-                <input type="submit" value="提交">
-                <button id="chatButton" type="button">AI辅助写作</button>
-            </article>
-        </form>
+                </form>
+            </div>
+        </div>
     </div>
+
+    <!-- 聊天框和关于我们 -->
     {% include '_chat_box.html' %}
+    
     <!-- About -->
-    {% include '_about.html' %}
+    <div class="container-fluid">
+        <div class="content-wrapper">
+            <div class="modern-card fade-in">
+                {% include '_about.html' %}
+            </div>
+        </div>
+    </div>
 </div>
-</body>
 
 <!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% include '_scripts.html' %}
+
+<script>
+// 简单的页面加载效果
+document.addEventListener('DOMContentLoaded', function() {
+    // 给所有元素添加简单的淡入效果
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(15px)';
+            element.style.transition = 'all 0.5s ease';
+            
+            // 触发动画
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 50);
+        }, index * 100);
+    });
+    
+    // 表单验证增强
+    const form = document.querySelector('form');
+    const titleInput = document.querySelector('input[name="title"]');
+    const contentTextarea = document.querySelector('textarea[name="content"]');
+    
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            if (!titleInput.value.trim()) {
+                e.preventDefault();
+                titleInput.focus();
+                titleInput.style.borderColor = 'var(--danger-color)';
+                setTimeout(() => {
+                    titleInput.style.borderColor = 'var(--border-color)';
+                }, 3000);
+                return false;
+            }
+            
+            if (!contentTextarea.value.trim()) {
+                e.preventDefault();
+                contentTextarea.focus();
+                contentTextarea.style.borderColor = 'var(--danger-color)';
+                setTimeout(() => {
+                    contentTextarea.style.borderColor = 'var(--border-color)';
+                }, 3000);
+                return false;
+            }
+        });
+    }
+    
+    // 字符计数（可选功能）
+    if (contentTextarea) {
+        const maxLength = 1000;
+        const counter = document.createElement('div');
+        counter.style.cssText = 'text-align: right; color: var(--text-muted); font-size: 0.8rem; margin-top: 0.5rem;';
+        contentTextarea.parentNode.appendChild(counter);
+        
+        function updateCounter() {
+            const remaining = maxLength - contentTextarea.value.length;
+            counter.textContent = `剩余字符: ${remaining}`;
+            if (remaining < 50) {
+                counter.style.color = 'var(--danger-color)';
+            } else if (remaining < 100) {
+                counter.style.color = 'var(--warning-color)';
+            } else {
+                counter.style.color = 'var(--text-muted)';
+            }
+        }
+        
+        contentTextarea.addEventListener('input', updateCounter);
+        updateCounter();
+    }
+});
+</script>
+
+</body>
 </html>

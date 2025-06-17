@@ -10,8 +10,397 @@
     <title>{{ keyword }} | 搜索结果 - 墨韵</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
     <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 全局样式优化 - 与home.html保持一致 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding-top: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 搜索结果标题 */
+        .search-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .search-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .search-header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .search-stats {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* 现代化卡片样式 */
+        .modern-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 搜索结果卡片 */
+        .result-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .result-card:hover::before {
+            opacity: 1;
+        }
+
+        .result-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .result-card-body {
+            padding: 1.5rem;
+        }
+
+        .result-card-header {
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .result-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .result-title a:hover {
+            color: #667eea;
+        }
+
+        .result-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .result-meta .author {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .result-meta .author:hover {
+            color: #667eea;
+        }
+
+        .result-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .result-type-journal {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+        }
+
+        .result-type-book {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            color: white;
+        }
+
+        .result-type-group {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #ff9f43 100%);
+            color: white;
+        }
+
+        .result-type-user {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: white;
+        }
+
+        .result-image {
+            max-width: 150px;
+            height: auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+        }
+
+        .result-content {
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .result-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .result-stats {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .result-stats a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .result-stats a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-primary-modern {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary-modern:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(74, 108, 247, 0.3);
+        }
+
+        /* 侧边栏样式 */
+        .sidebar-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .sidebar-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+        }
+
+        .sidebar-body {
+            padding: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        /* 图标样式 */
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .search-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .result-card-body {
+                padding: 1rem;
+            }
+
+            .result-meta {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .result-actions {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #main {
+                padding-top: 1rem;
+            }
+
+            .search-header {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .search-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .sidebar-body {
+                padding: 1rem;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 简洁的加载效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -25,143 +414,310 @@
     {% include '_menu.html' %}
 
     <!-- Main -->
-    <div id="main">
-        <!-- Post -->
-        {% for item in results %}
-            {% if item['search_type']=='journal' %}
-                <article class="post">
-                    <header>
-                        <div class="title">
-                            <h2><a href="/journal/{{ item['id'] }}">{{ item['title'] }}</a></h2>
+    <div id="main" class="container-fluid">
+        <div class="content-wrapper">
+            <div class="row">
+                <!-- 主内容区域 -->
+                <div class="col-lg-8 col-md-7">
+                    <!-- 搜索结果标题 -->
+                    <div class="search-header fade-in">
+                        <div class="search-header-content">
+                            <h1>
+                                <i class="fas fa-search me-2"></i>搜索结果
+                            </h1>
+                            <div class="search-stats">
+                                关键词："{{ keyword }}" | 类型：{{ search_type }} | 用时：{{ cost_time }}秒 | 共找到 {{ results | length }} 条结果
+                            </div>
                         </div>
-                        <div class="meta">
-                            <span class="published">{{ item['publish_time'] }}</span>
-                            <a href="/profile/{{ item['author_id'] }}" class="author">
-                                <span class="name">{{ login_user['account'] }}</span>
-                            </a>
-                        </div>
-                    </header>
-                    <a href="/journal/{{ item['id'] }}" class="image featured">
-                        <img src="{{ item['header'] }}" alt="{{ item['title'] }}_头图"/>
-                    </a>
-                    <p>{{ item['first_paragraph'] }}</p>
-                    <p>结果类型：书评</p>
-                    <footer>
-                        <ul class="actions">
-                            <li><a href="/journal/{{ item['id'] }}" class="button large">阅读全文</a></li>
-                        </ul>
-                        <ul class="stats">
-                            <li><a href="/account/{{ login_user['id'] }}">{{ login_user['account'] }}</a></li>
-                            <li><i class="icon solid fa-heart">{{ item['like_num'] }}</i></li>
-                            <li><i class="icon solid fa-comment">{{ item['comment_num'] }}</i></li>
-                        </ul>
-                    </footer>
-                </article>
-            {% elif item['search_type']=='book' %}
-                <article class="post">
-                    <header>
-                        <div class="title">
-                            <h2><a href="/book/{{ item['id'] }}">{{ item['title'] }}</a></h2>
-
-                            <p class="score" title="作者">
-                                <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">作者：{{ item['author'] }}</a>
-                            </p>
-                        </div>
-                        <div class="meta">
-                            <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">
-                                <img src="{{ item['book_cover'] }}" alt="{{ item['title'] }}_封面" style="height: 150px">
-                            </a>
-                        </div>
-                    </header>
-                    <span class="published">{{ item['publish_date'] }}</span>
-                    <p>{{ item['description'] }}</p>
-                    <p>结果类型：书籍</p>
-                    <footer>
-                        <ul class="actions">
-                            <li><a href="/book/{{ item['id'] }}" class="button large">查看详情</a></li>
-                        </ul>
-                        <ul class="stats">
-                            {% if item['douban_id'] %}
-                                <li>
-                                    <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">
-                                        <i class="icon solid fa-book">豆瓣评分：{{ item['douban_score'] }}</i>
-                                    </a>
-                                </li>
+                    </div>
+                    
+                    <!-- 搜索结果列表 -->
+                    <div class="search-results">
+                        {% for item in results %}
+                            {% if item['search_type']=='journal' %}
+                                <div class="result-card fade-in">
+                                    <div class="result-card-body">
+                                        <div class="result-card-header">
+                                            <div class="result-type-badge result-type-journal">
+                                                <i class="fas fa-book-open me-1"></i>书评
+                                            </div>
+                                            <h3 class="result-title">
+                                                <a href="/journal/{{ item['id'] }}">{{ item['title'] }}</a>
+                                            </h3>
+                                            <div class="result-meta">
+                                                <span><i class="fas fa-calendar me-1"></i>{{ item['publish_time'] }}</span>
+                                                <a href="/profile/{{ item['author_id'] }}" class="author">
+                                                    <i class="fas fa-user me-1"></i>{{ login_user['account'] }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        {% if item['header'] %}
+                                        <div class="row mb-3">
+                                            <div class="col-md-3">
+                                                <a href="/journal/{{ item['id'] }}">
+                                                    <img src="{{ item['header'] }}" alt="{{ item['title'] }}_头图" class="result-image img-fluid"/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="result-content">
+                                                    {{ item['first_paragraph'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <div class="result-content">
+                                            {{ item['first_paragraph'] }}
+                                        </div>
+                                        {% endif %}
+                                        
+                                        <div class="result-actions">
+                                            <a href="/journal/{{ item['id'] }}" class="btn-primary-modern">
+                                                <i class="fas fa-book-reader me-1"></i>阅读全文
+                                            </a>
+                                            <div class="result-stats">
+                                                <span><i class="fas fa-heart me-1"></i>{{ item['like_num'] }}</span>
+                                                <span><i class="fas fa-comment me-1"></i>{{ item['comment_num'] }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif item['search_type']=='book' %}
+                                <div class="result-card fade-in">
+                                    <div class="result-card-body">
+                                        <div class="result-card-header">
+                                            <div class="result-type-badge result-type-book">
+                                                <i class="fas fa-book me-1"></i>书籍
+                                            </div>
+                                            <h3 class="result-title">
+                                                <a href="/book/{{ item['id'] }}">{{ item['title'] }}</a>
+                                            </h3>
+                                            <div class="result-meta">
+                                                <span><i class="fas fa-calendar me-1"></i>{{ item['publish_date'] }}</span>
+                                                {% if item['author'] %}
+                                                <a href="https://book.douban.com/subject/{{ item['douban_id'] }}" class="author">
+                                                    <i class="fas fa-pen me-1"></i>{{ item['author'] }}
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            {% if item['book_cover'] %}
+                                            <div class="col-md-3">
+                                                <a href="/book/{{ item['id'] }}">
+                                                    <img src="{{ item['book_cover'] }}" alt="{{ item['title'] }}_封面" class="result-image img-fluid"/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9">
+                                            {% else %}
+                                            <div class="col-12">
+                                            {% endif %}
+                                                <div class="result-content">
+                                                    {{ item['description'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="result-actions">
+                                            <a href="/book/{{ item['id'] }}" class="btn-primary-modern">
+                                                <i class="fas fa-info-circle me-1"></i>查看详情
+                                            </a>
+                                            <div class="result-stats">
+                                                {% if item['douban_id'] %}
+                                                <a href="https://book.douban.com/subject/{{ item['douban_id'] }}">
+                                                    <i class="fas fa-star me-1"></i>豆瓣：{{ item['douban_score'] }}
+                                                </a>
+                                                {% endif %}
+                                                {% if item['bangumi_id'] %}
+                                                <a href="https://bgm.tv/subject{{ item['bangumi_id'] }}">
+                                                    <i class="fas fa-star me-1"></i>Bangumi：{{ item['bangumi_score'] }}
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif item['search_type']=="group" %}
+                                <div class="result-card fade-in">
+                                    <div class="result-card-body">
+                                        <div class="result-card-header">
+                                            <div class="result-type-badge result-type-group">
+                                                <i class="fas fa-users me-1"></i>圈子
+                                            </div>
+                                            <h3 class="result-title">
+                                                <a href="/group/{{ item['id'] }}">{{ item['name'] }}</a>
+                                            </h3>
+                                            <div class="result-meta">
+                                                <span><i class="fas fa-calendar me-1"></i>{{ item['publish_date'] }}</span>
+                                                <a href="/profile/{{ item['founder_id'] }}" class="author">
+                                                    <i class="fas fa-crown me-1"></i>{{ item['founder'] }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            {% if item['group_icon'] %}
+                                            <div class="col-md-3">
+                                                <a href="/group/{{ item['id'] }}">
+                                                    <img src="{{ item['group_icon'] }}" alt="{{ item['name'] }}_头像" class="result-image img-fluid rounded"/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9">
+                                            {% else %}
+                                            <div class="col-12">
+                                            {% endif %}
+                                                <div class="result-content">
+                                                    {{ item['description'] }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="result-actions">
+                                            <a href="/group/{{ item['id'] }}" class="btn-primary-modern">
+                                                <i class="fas fa-eye me-1"></i>查看圈子
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% elif item['search_type']=="user" %}
+                                <div class="result-card fade-in">
+                                    <div class="result-card-body">
+                                        <div class="result-card-header">
+                                            <div class="result-type-badge result-type-user">
+                                                <i class="fas fa-user me-1"></i>用户
+                                            </div>
+                                            <h3 class="result-title">
+                                                <a href="/profile/{{ item['id'] }}">{{ item['account'] }}</a>
+                                            </h3>
+                                            <div class="result-meta">
+                                                <span><i class="fas fa-shield-alt me-1"></i>{{ item['role'] }}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row mb-3">
+                                            {% if item['profile_photo'] %}
+                                            <div class="col-md-3">
+                                                <a href="/profile/{{ item['id'] }}">
+                                                    <img src="{{ item['profile_photo'] }}" alt="{{ item['account'] }}_头像" class="result-image img-fluid rounded-circle"/>
+                                                </a>
+                                            </div>
+                                            <div class="col-md-9">
+                                            {% else %}
+                                            <div class="col-12">
+                                            {% endif %}
+                                                <div class="result-content">
+                                                    {{ item['signature'] if item['signature'] else '这个用户还没有个性签名。' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="result-actions">
+                                            <a href="/profile/{{ item['id'] }}" class="btn-primary-modern">
+                                                <i class="fas fa-user-circle me-1"></i>查看资料
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endif %}
-                            {% if item['bangumi_id'] %}
-                                <li>
-                                    <a href="https://bgm.tv/subject{{ item['bangumi_id'] }}">
-                                        <i class="icon solid fa-comment">Bangumi评分：{{ item['bangumi_score'] }}</i>
-                                    </a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </footer>
-                </article>
-            {% elif item['search_type']=="group" %}
-                <article class="post">
-                    <header>
-                        <div class="title">
-                            <h2><a href="/group/{{ item['id'] }}">{{ item['name'] }}</a></h2>
-                            <p class="score" title="创建者">
-                                <a href="/profile/{{ item['founder_id'] }}">创建者：{{ item['founder'] }}</a>
-                            </p>
-                            <p>{{ item['description'] }}</p>
+                        {% endfor %}
+                        
+                        {% if results|length == 0 %}
+                        <div class="result-card fade-in text-center">
+                            <div class="result-card-body">
+                                <i class="fas fa-search text-muted" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                                <h3 class="text-muted">未找到相关结果</h3>
+                                <p class="text-muted">请尝试使用其他关键词搜索</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- 侧边栏区域 -->
+                <div class="col-lg-4 col-md-5">
+                    <section id="sidebar">
+                        <!-- 搜索信息 -->
+                        <section class="fade-in">
+                            <div class="sidebar-card">
+                                <div class="sidebar-header">
+                                    <h2 class="section-title mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>搜索信息
+                                    </h2>
+                                </div>
+                                <div class="sidebar-body">
+                                    <div class="mb-3">
+                                        <strong class="icon-gradient">搜索类型：</strong>{{ search_type }}
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="icon-gradient">搜索内容：</strong>"{{ keyword }}"
+                                    </div>
+                                    <div class="mb-3">
+                                        <strong class="icon-gradient">搜索用时：</strong>{{ cost_time }}秒
+                                    </div>
+                                    <div class="mb-0">
+                                        <strong class="icon-gradient">搜索结果：</strong>{{ results | length }}条相关结果
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
 
-                        </div>
-                        <div class="meta">
-                            <a href="/group/{{ item['id'] }}">
-                                <img src="{{ item['group_icon'] }}" alt="{{ item['name'] }}_头像"
-                                     style="horiz-align: center;border-radius: 5%;height: 150px;width: 150px">
-                            </a>
-                        </div>
-                    </header>
-                    <span class="published">{{ item['publish_date'] }}</span>
-                    <p>{{ item['description'] }}</p>
-                    <p>结果类型：圈子</p>
-                </article>
-            {% elif item['search_type']=="user" %}
-                <article class="post">
-                    <header>
-                        <div class="title">
-                            <h2><a href="/profile/{{ item['id'] }}">{{ item['account'] }}</a></h2>
-                            <p>{{ item['signature'] }}</p>
-                        </div>
-                        <div class="meta">
-                            <a href="/profile/{{ item['id'] }}">
-                                <img src="{{ item['profile_photo'] }}" alt="{{ item['account'] }}_头像"
-                                     style="horiz-align: center;border-radius: 5%;height: 150px;width: 150px">
-                            </a>
-                        </div>
-                    </header>
-                    <span class="published">身份：{{ item['role'] }}</span>
-                    <p>结果类型：用户</p>
-                </article>
-            {% endif %}
-        {% endfor %}
+                        <!-- About区域 -->
+                        <section class="fade-in">
+                            <div class="sidebar-card">
+                                {% include '_about.html' %}
+                            </div>
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Sidebar -->
-    <section id="sidebar">
-
-        <!-- Intro -->
-        <section id="intro">
-            <header>
-                <h2>搜索</h2>
-                <p>搜索类型：{{ search_type }}</p>
-                <p>搜索内容：{{ keyword }}</p>
-                <p>搜索用时：{{ cost_time }}秒</p>
-                <p>搜索结果：{{ results | length }}条相关结果</p>
-            </header>
-        </section>
-
-        <!-- About -->
-        {% include '_about.html' %}
-    </section>
-</div>
-
 <!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% include '_scripts.html' %}
+
+<script>
+// 简单的页面加载效果
+document.addEventListener('DOMContentLoaded', function() {
+    // 给所有元素添加简单的淡入效果
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(15px)';
+            element.style.transition = 'all 0.5s ease';
+            
+            // 触发动画
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 50);
+        }, index * 100);
+    });
+    
+    // 平滑滚动
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+
 </body>
 
 </html>

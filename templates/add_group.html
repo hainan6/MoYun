@@ -12,6 +12,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
     <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-muted);
+        }
+        .add-group-wrapper {
+            max-width: 700px;
+            margin: 2.5rem auto 0 auto;
+            padding: 0 24px;
+        }
+        .add-group-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: 3rem 2.5rem 2.5rem 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .add-group-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        .form-control, .form-select {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.2rem;
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.08);
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.7rem 0;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: #3756c9;
+        }
+        .btn-outline-secondary, .btn-outline-danger {
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.7rem 0;
+        }
+        .btn-outline-secondary {
+            border: 1px solid var(--border-color);
+            color: var(--secondary-color);
+        }
+        .btn-outline-secondary:hover {
+            background: var(--light-bg);
+        }
+        .btn-outline-danger {
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+        }
+        .btn-outline-danger:hover {
+            background: #ffeaea;
+        }
+        .meta {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+        }
+        .image-upload {
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            border: 1px dashed var(--border-color);
+        }
+        .image-upload input[type="file"] {
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
 </head>
 
 <body class="single is-preload">
@@ -28,36 +147,31 @@
     <!-- Main -->
     <div id="main">
         <!-- Post -->
-        <form action="/add_group" method="post" enctype="multipart/form-data">
-            <article class="post">
-                <header>
-                    <div class="title">
-                        <label>
-                            <input type="text" name="name" style="font-size: larger" placeholder="给圈子取个好记的名字吧">
-                        </label>
+        <div class="add-group-wrapper">
+            <form action="/add_group" method="post" enctype="multipart/form-data">
+                <div class="add-group-card">
+                    <div class="add-group-title">创建圈子</div>
+                    <div class="meta mb-3">创建者：<a href="/profile/{{ login_user['id'] }}">{{ login_user['account'] }}</a></div>
+                    <div class="mb-3">
+                        <label for="group_name" class="form-label">圈子名称</label>
+                        <input type="text" class="form-control" id="group_name" name="name" placeholder="给圈子取个好记的名字吧" required>
                     </div>
-                    <div class="meta">
-                        <span class="published">创建者：
-                            <a href="/profile/{{ login_user['id'] }}">{{ login_user['account'] }}</a>
-                        </span>
+                    <div class="mb-3 image-upload">
+                        <input type="file" class="form-control" id="group_icon" name="group_icon">
+                        <small class="text-muted">您可在此上传圈子的图标，该图片将会被裁剪为正方形</small>
                     </div>
-                </header>
-                <span class="image featured">
-                    <input type="file" name="group_icon" value="上传您的圈子图标">
-                    您可在此上传圈子的图标，该图片将会被裁剪为正方形
-                </span>
-                <!-- content -->
-                <label class="content">
-                    <textarea name="description" id="description" placeholder="介绍一下您的圈子吧" rows="4"></textarea>
-                </label>
-
-                <div style="display: flex">
-                    <input type="submit" value="提交" style="flex:1">
-                    <button style="flex: 1; margin-left: 5px;" type="reset">清除</button>
-                    <button style="flex: 1; margin-left: 5px;" onclick="window.history.back()">取消</button>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">圈子简介</label>
+                        <textarea class="form-control" id="description" name="description" placeholder="介绍一下您的圈子吧" rows="4" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary flex-fill">提交</button>
+                        <button type="reset" class="btn btn-outline-secondary flex-fill">清除</button>
+                        <button type="button" class="btn btn-outline-danger flex-fill" onclick="window.history.back()">取消</button>
+                    </div>
                 </div>
-            </article>
-        </form>
+            </form>
+        </div>
     </div>
 
     <!-- About -->

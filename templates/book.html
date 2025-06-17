@@ -10,8 +10,419 @@
     <title>{{ book['title'] }} | 书籍 - 墨韵</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
     <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 全局样式优化 - 与home.html保持一致 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding-top: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 现代化卡片样式 */
+        .modern-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+            overflow: hidden;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 书籍主要信息卡片 */
+        .book-main-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .book-header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .book-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .book-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .book-author {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .book-body {
+            padding: 2rem;
+        }
+
+        .book-cover-section {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .book-cover {
+            flex-shrink: 0;
+        }
+
+        .book-cover img {
+            width: 200px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            transition: transform 0.3s ease;
+        }
+
+        .book-cover img:hover {
+            transform: scale(1.05);
+        }
+
+        .book-description {
+            flex: 1;
+            line-height: 1.8;
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .book-description p {
+            margin-bottom: 1rem;
+        }
+
+        /* 书籍信息表格 */
+        .book-info-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .book-info-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+        }
+
+        .book-info-body {
+            padding: 1.5rem;
+        }
+
+        .info-table {
+            width: 100%;
+            margin: 0;
+        }
+
+        .info-table tr {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .info-table td {
+            padding: 0.75rem 0;
+            vertical-align: top;
+        }
+
+        .info-table td:first-child {
+            font-weight: 600;
+            color: var(--primary-color);
+            width: 80px;
+            padding-right: 1rem;
+        }
+
+        .info-table td:last-child {
+            color: var(--text-muted);
+        }
+
+        .info-table a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .info-table a:hover {
+            color: #667eea;
+        }
+
+        /* 操作卡片 */
+        .actions-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .actions-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+        }
+
+        .actions-body {
+            padding: 1.5rem;
+        }
+
+        .action-item {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .action-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .action-item:hover::before {
+            opacity: 1;
+        }
+
+        .action-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+            background: var(--white);
+        }
+
+        .action-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .action-title a:hover {
+            color: #667eea;
+        }
+
+        .action-description {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        /* 图标样式 */
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .book-header {
+                padding: 1.5rem;
+            }
+
+            .book-title {
+                font-size: 1.5rem;
+            }
+
+            .book-subtitle {
+                font-size: 1rem;
+            }
+
+            .book-body {
+                padding: 1.5rem;
+            }
+
+            .book-cover-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .book-cover img {
+                width: 150px;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #main {
+                padding-top: 1rem;
+            }
+
+            .book-header {
+                padding: 1rem;
+            }
+
+            .book-title {
+                font-size: 1.3rem;
+            }
+
+            .book-body {
+                padding: 1rem;
+            }
+
+            .book-info-body,
+            .actions-body {
+                padding: 1rem;
+            }
+
+            .info-table td:first-child {
+                width: 70px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 简洁的加载效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -26,123 +437,210 @@
     {% include '_menu.html' %}
 
     <!-- Main -->
-    <div id="main">
-        <!-- Post -->
-        <article class="post">
-            <header>
-                <div class="title">
-                    <h2>{{ book['title'] }}</h2>
-                    {% if book['origin_title'] %}
-                        <h3>{{ book['origin_title'] }}</h3>
-                    {% endif %}
-                    {% if book['subtitle'] %}
-                        <h3>{{ book['subtitle'] }}</h3>
-                    {% endif %}
-                    <h2>{{ book['author'] }}</h2>
+    <div id="main" class="container-fluid">
+        <div class="content-wrapper">
+            <div class="row">
+                <!-- 主内容区域 -->
+                <div class="col-lg-8 col-md-7">
+                    <!-- 书籍主要信息卡片 -->
+                    <div class="book-main-card fade-in">
+                        <!-- 书籍标题头部 -->
+                        <div class="book-header">
+                            <div class="book-header-content">
+                                <h1 class="book-title">{{ book['title'] }}</h1>
+                                {% if book['subtitle'] %}
+                                    <h2 class="book-subtitle">{{ book['subtitle'] }}</h2>
+                                {% endif %}
+                                {% if book['origin_title'] %}
+                                    <h3 class="book-subtitle">{{ book['origin_title'] }}</h3>
+                                {% endif %}
+                                <p class="book-author">
+                                    <i class="fas fa-user-edit me-2"></i>{{ book['author'] }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 书籍内容 -->
+                        <div class="book-body">
+                            <!-- 封面和描述 -->
+                            <div class="book-cover-section">
+                                <div class="book-cover">
+                                    <a href="https://book.douban.com/subject/{{ book['douban_id'] }}" target="_blank">
+                                        <img src="{{ book_cover }}" alt="{{ book['title'] }}_封面">
+                                    </a>
+                                </div>
+                                <div class="book-description">
+                                    {% for p in book['description'].split('\n') %}
+                                        <p>{{ p }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="meta">
-                    <a href="https://book.douban.com/subject/{{ book['douban_id'] }}">
-                        <img src="{{ book_cover }}" style="horiz-align: center; border-radius: 5%; width: 150px;"
-                             alt="{{ book['title'] }}_封面">
-                    </a>
+                
+                <!-- 侧边栏区域 -->
+                <div class="col-lg-4 col-md-5">
+                    <!-- 书籍详细信息 -->
+                    <section class="fade-in">
+                        <div class="book-info-card">
+                            <div class="book-info-header">
+                                <h2 class="section-title mb-0">
+                                    <i class="fas fa-info-circle me-2"></i>书籍信息
+                                </h2>
+                            </div>
+                            <div class="book-info-body">
+                                <table class="info-table">
+                                    <tr>
+                                        <td>标题</td>
+                                        <td>{{ book['title'] }}</td>
+                                    </tr>
+                                    {% if book['subtitle'] %}
+                                        <tr>
+                                            <td>副标题</td>
+                                            <td>{{ book['subtitle'] }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if book['origin_title'] %}
+                                        <tr>
+                                            <td>原标题</td>
+                                            <td>{{ book['origin_title'] }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td>作者</td>
+                                        <td>{{ book['author'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>页数</td>
+                                        <td>{{ book['page'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>出版社</td>
+                                        <td>{{ book['publisher'] }}</td>
+                                    </tr>
+                                    {% if book['publish_date'] %}
+                                        <tr>
+                                            <td>出版日期</td>
+                                            <td>{{ book['publish_date'] }}</td>
+                                        </tr>
+                                    {% endif %}
+                                    <tr>
+                                        <td>豆瓣评分</td>
+                                        <td>
+                                            <a href="https://book.douban.com/subject/{{ book['douban_id'] }}" target="_blank">
+                                                <i class="fas fa-star text-warning me-1"></i>{{ book['douban_score'] }}
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>类型</td>
+                                        <td>{{ book['type'] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ISBN</td>
+                                        <td>{{ book['isbn'] }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 操作区域 -->
+                    <section class="fade-in">
+                        <div class="actions-card">
+                            <div class="actions-header">
+                                <h2 class="section-title mb-0">
+                                    <i class="fas fa-tools me-2"></i>相关操作
+                                </h2>
+                            </div>
+                            <div class="actions-body">
+                                <div class="action-item">
+                                    <h3 class="action-title">
+                                        <a href="/add_journal">
+                                            <i class="fas fa-pen-fancy me-2"></i>写书评
+                                        </a>
+                                    </h3>
+                                    <p class="action-description">有些想法？表达出来吧</p>
+                                </div>
+
+                                <div class="action-item">
+                                    <h3 class="action-title">
+                                        <a href="/search?type=journal&keyword={{ book['title'] }}">
+                                            <i class="fas fa-search me-2"></i>相关书评
+                                        </a>
+                                    </h3>
+                                    <p class="action-description">看看其他人怎么评价的吧</p>
+                                </div>
+
+                                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
+                                    <div class="action-item">
+                                        <h3 class="action-title">
+                                            <a href="/edit_book/{{ book['id'] }}">
+                                                <i class="fas fa-edit me-2"></i>编辑书籍信息
+                                            </a>
+                                        </h3>
+                                        <p class="action-description">能力越大，责任越大</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- About -->
+                    <div class="fade-in">
+                        {% include '_about.html' %}
+                    </div>
                 </div>
-            </header>
-
-            {% for p in book['description'].split('\n') %}
-                <p>{{ p }}</p>
-            {% endfor %}
-        </article>
-    </div>
-
-    <!-- Sidebar -->
-    <section id="sidebar">
-        <!-- Mini Posts -->
-        <section>
-            <span class="intro">
-                    <table style="horiz-align: center;">
-                        <tr>
-                            <td>标题</td>
-                            <td>{{ book['title'] }}</td>
-                        </tr>
-                        {% if book['subtitle'] %}
-                            <tr>
-                            <td>副标题</td>
-                            <td>{{ book['subtitle'] }}</td>
-                        </tr>
-                        {% endif %}
-                        {% if book['origin_title'] %}
-                            <tr>
-                            <td>原标题</td>
-                            <td>{{ book['origin_title'] }}</td>
-                        </tr>
-                        {% endif %}
-                        <tr>
-                            <td>作者</td>
-                            <td>{{ book['author'] }}</td>
-                        </tr>
-                        <tr>
-                            <td>页数</td>
-                            <td>{{ book['page'] }}</td>
-                        </tr>
-                        <tr>
-                            <td>出版社</td>
-                            <td>{{ book['publisher'] }}</td>
-                        </tr>
-                        {% if book['publish_date'] %}
-                            <tr>
-                                <td>出版日期</td>
-                                <td>{{ book['publish_date'] }}</td>
-                            </tr>
-                        {% endif %}
-                        <tr>
-                            <td>豆瓣评分</td>
-                            <td><a href="https://book.douban.com/subject/{{ book['douban_id'] }}">{{ book['douban_score'] }}</a></td>
-                        </tr>
-                        <tr>
-                            <td>类型</td>
-                            <td>{{ book['type'] }}</td>
-                        </tr>
-                        <tr>
-                            <td>ISBN</td>
-                            <td>{{ book['isbn'] }}</td>
-                        </tr>
-                    </table>
-                </span>
-
-            <div class="mini-posts">
-                <!-- Mini Post -->
-                <article class="mini-post">
-                    <header>
-                        <h3><a href="/add_journal">写书评</a></h3>
-                        <p>有些想法？表达出来吧</p>
-                    </header>
-                </article>
-
-                <article class="mini-post">
-                    <header>
-                        <h3><a href="/search?type=journal&keyword={{ book['title'] }}">相关书评</a></h3>
-                        <p>看看其他人怎么评价的吧</p>
-                    </header>
-                </article>
-
-                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
-                    <article class="mini-post">
-                        <header>
-                            <h3><a href="/edit_book/{{ book['id'] }}">编辑书籍信息</a></h3>
-                            <p>能力越大，责任越大</p>
-                        </header>
-                    </article>
-                {% endif %}
             </div>
-        </section>
-
-        <!-- About -->
-        {% include '_about.html' %}
-    </section>
+        </div>
+    </div>
 </div>
 
 <!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% include '_scripts.html' %}
+
+<script>
+// 简单的页面加载效果
+document.addEventListener('DOMContentLoaded', function() {
+    // 给所有元素添加简单的淡入效果
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(15px)';
+            element.style.transition = 'all 0.5s ease';
+            
+            // 触发动画
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 50);
+        }, index * 100);
+    });
+    
+    // 平滑滚动
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+
 </body>
 
 </html>

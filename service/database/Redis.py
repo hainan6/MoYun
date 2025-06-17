@@ -7,7 +7,7 @@ import redis
 from werkzeug.security import generate_password_hash
 
 from service.database.Utils import BookDict, UserDict, JournalDict, JournalCommentDict, JournalLikeDict, \
-    GroupDict, GroupDiscussionDict, GroupUserDict, ChatDict, ErrorDict
+    GroupDict, GroupDiscussionDict, GroupUserDict, ChatDict, ErrorDict, TeacherDict, StudentDict
 
 
 class Cache:
@@ -166,6 +166,19 @@ class Cache:
         else:
             return None
 
+    def _delete(self, key: str) -> bool:
+        """
+        删除键
+        :param key: 键
+        :return: 是否成功删除
+        """
+        try:
+            self.host.delete(key)
+            return True
+        except Exception as e:
+            print(f"Redis _delete error: {e}")
+            return False
+
     """User相关"""
 
     def setUser(self, user: Union[UserDict, list[UserDict]]):
@@ -241,6 +254,28 @@ class Cache:
             journal['comment_num'] = int(journal['comment_num'])
             return JournalDict(**journal)
         return None
+
+    def deleteJournal(self, journal_id: Union[int, str]):
+        """
+        删除书评及其相关缓存
+        :param journal_id: 书评id
+        """
+        # 删除书评主体
+        self._delete(f"Journal_{journal_id}")
+        
+        # 删除相关评论缓存
+        comment_ids = self._getList(f"Journal_{journal_id}_comment_ids")
+        if comment_ids:
+            for comment_id in comment_ids:
+                self._delete(f"JournalComment_{comment_id}")
+            self._delete(f"Journal_{journal_id}_comment_ids")
+        
+        # 删除相关点赞缓存
+        like_author_ids = self._getList(f"Journal_{journal_id}_like_author_ids")
+        if like_author_ids:
+            for author_id in like_author_ids:
+                self._delete(f"JournalLike_{author_id}")
+            self._delete(f"Journal_{journal_id}_like_author_ids")
 
     """JournalComment相关"""
 
@@ -387,6 +422,7 @@ class Cache:
         return None
 
     """Group相关"""
+
 
     def setGroup(self, group: Union[GroupDict, list[GroupDict]]):
         """
@@ -677,3 +713,43 @@ class Cache:
             error['error_code'] = int(error['error_code'])
             return error
         return None
+
+    def createSampleUsers(self):
+        """
+        创建示例用户数据
+        """
+        # 创建管理员用户
+        admin = UserDict(
+            id=1,
+            account="admin",
+            password="scrypt:32768:8:1$ZVffw0BeuVvC3QfM$23a018d0a598367d12b371e9b655d7e338b2916def94f33bf81c2d6cd80888580ca188e467b78d968b886c6b59406bedeb3dbe0cb777d9bd428a7b4f6b75b6d5",
+            signature="道阻且长，行则将至！",
+            email="Steven-Zhl@foxmail.com",
+            telephone="15264051001",
+            role="admin"
+        )
+        self.setUser(admin)
+
+        # 创建导师用户
+        teacher = UserDict(
+            id=2,
+            account="teacher",
+            password="2021061210",
+            signature="计算机科学导师",
+            email="teacher@example.com",
+            telephone="13800000001",
+            role="teacher"
+        )
+        self.setUser(teacher)
+
+        # 创建学生用户
+        student = UserDict(
+            id=3,
+            account="student",
+            password="20221050006",
+            signature="热爱编程的学生",
+            email="student@example.com",
+            telephone="13800000002",
+            role="student"
+        )
+        self.setUser(student)

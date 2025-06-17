@@ -12,6 +12,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
     <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
     <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: var(--text-muted);
+        }
+        .book-menu-wrapper {
+            max-width: 1200px;
+            margin: 2.5rem auto 0 auto;
+            padding: 0 24px;
+            display: flex;
+            gap: 2rem;
+        }
+        .book-main {
+            flex: 1 1 0;
+        }
+        .book-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .book-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        .mini-posts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .mini-post {
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            padding: 1.2rem 1rem;
+            flex: 1 1 320px;
+            min-width: 280px;
+            max-width: 360px;
+            margin-bottom: 0;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .mini-post:hover {
+            box-shadow: 0 0.5rem 2rem rgba(58,59,69,0.12);
+            transform: translateY(-2px);
+        }
+        .mini-post h2, .mini-post h3 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .mini-post .meta, .mini-post .published {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 0.3rem;
+        }
+        .mini-post .author .name {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        .mini-post .icon {
+            margin-right: 0.5em;
+            color: var(--primary-color);
+        }
+        .sidebar {
+            width: 320px;
+            flex-shrink: 0;
+        }
+        .sidebar-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .sidebar .mini-posts {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .sidebar .mini-post {
+            max-width: 100%;
+            min-width: 0;
+        }
+        .sidebar .mini-post h3 {
+            font-size: 1.05rem;
+        }
+        .sidebar .mini-post p {
+            font-size: 0.95rem;
+            color: var(--secondary-color);
+        }
+        .sidebar .mini-post a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .sidebar .mini-post a:hover {
+            color: var(--accent-color);
+        }
+        .sidebar .mini-post {
+            background: var(--light-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            padding: 1rem;
+        }
+        .sidebar .mini-post:hover {
+            box-shadow: 0 0.5rem 2rem rgba(58,59,69,0.12);
+            transform: translateY(-2px);
+        }
+        .sidebar .sidebar-card {
+            margin-bottom: 1.5rem;
+        }
+        .sidebar .sidebar-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        .sidebar .form-control {
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            font-size: 1rem;
+            padding: 0.6rem 1rem;
+        }
+        .sidebar .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.08);
+        }
+        @media (max-width: 1000px) {
+            .book-menu-wrapper {
+                flex-direction: column;
+                gap: 0;
+            }
+            .sidebar {
+                width: 100%;
+                margin-top: 2rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -25,59 +186,51 @@
     <!-- Menu -->
     {% include '_menu.html' %}
 
-    <!-- Main -->
-    <div id="main">
-        <h2 class="title">新书上架</h2>
-        <div class="mini-posts">
-            <!-- Posts -->
-            {% for book in books %}
-                <article class="mini-post">
-                    <header>
-                        <h2><a href="/book/{{ book['id'] }}">{{ book['title'] }}</a></h2>
-                        <div class="meta">
-                            {% if book['publish_date'] %}
-                                <p class="published">{{ book['publish_date'] }}</p>
-                            {% endif %}
-                            <a class="author">
-                                <span class="name" title="作者">{{ book['author'] }}</span>
-                            </a>
-                            <p>
-                                {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
-                                    <a href="edit_book/{{ book['id'] }}" class="icon solid fa-cog">编辑书籍信息</a>
-                                {% endif %}
-                                {% if book['douban_id'] %}
-                                    <a href="https://book.douban.com/subject/{{ book['douban_id'] }}"
-                                       class="icon solid fa-book">豆瓣评分：{{ book['douban_score'] }}</a>
-                                {% endif %}
-                                {% if book['bangumi_id'] %}
-                                    <a href="https://bgm.tv/subject/{{ book['bangumi_id'] }}"
-                                       class="icon solid fa-book-open">Bangumi评分：{{ book['bangumi_score'] }}</a>
-                                {% endif %}
-                            </p>
-                        </div>
-                    </header>
-                </article>
-            {% endfor %}
+    <div class="book-menu-wrapper">
+        <div class="book-main">
+            <div class="book-card">
+                <div class="book-title">新书上架</div>
+                <div class="mini-posts">
+                    <!-- Posts -->
+                    {% for book in books %}
+                        <article class="mini-post">
+                            <header>
+                                <h2><a href="/book/{{ book['id'] }}">{{ book['title'] }}</a></h2>
+                                <div class="meta">
+                                    {% if book['publish_date'] %}
+                                        <p class="published">{{ book['publish_date'] }}</p>
+                                    {% endif %}
+                                    <a class="author">
+                                        <span class="name" title="作者">{{ book['author'] }}</span>
+                                    </a>
+                                    <p>
+                                        {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
+                                            <a href="edit_book/{{ book['id'] }}" class="icon solid fa-cog">编辑书籍信息</a>
+                                        {% endif %}
+                                        {% if book['douban_id'] %}
+                                            <a href="https://book.douban.com/subject/{{ book['douban_id'] }}"
+                                               class="icon solid fa-book">豆瓣评分：{{ book['douban_score'] }}</a>
+                                        {% endif %}
+                                        {% if book['bangumi_id'] %}
+                                            <a href="https://bgm.tv/subject/{{ book['bangumi_id'] }}"
+                                               class="icon solid fa-book-open">Bangumi评分：{{ book['bangumi_score'] }}</a>
+                                        {% endif %}
+                                    </p>
+                                </div>
+                            </header>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </div>
-
-    <!-- Sidebar -->
-    <section id="sidebar">
-        <!-- Intro -->
-        <section id="info">
-            <header>
-                <h2>书籍首页</h2>
+        <div class="sidebar">
+            <div class="sidebar-card">
+                <div class="sidebar-title">书籍首页</div>
                 <form id="search" method="get" action="/search">
-                    <label>
-                        <input type="hidden" name="type" id="type" value="book">
-                        <input type="text" placeholder="搜索书籍" name="keyword" id="keyword"/>
-                    </label>
+                    <input type="hidden" name="type" id="type" value="book">
+                    <input type="text" class="form-control" placeholder="搜索书籍" name="keyword" id="keyword"/>
                 </form>
-            </header>
-        </section>
-
-        <!-- Mini Posts -->
-        <section>
+            </div>
             <div class="mini-posts">
                 <!-- Mini Post -->
                 {% if login_user['role']=='admin' or login_user['role']=='teacher' %}
@@ -95,10 +248,9 @@
                     </header>
                 </article>
             </div>
-        </section>
-        <!-- About -->
-        {% include '_about.html' %}
-    </section>
+            {% include '_about.html' %}
+        </div>
+    </div>
 </div>
 
 <!-- Scripts -->

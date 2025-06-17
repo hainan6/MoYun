@@ -6,7 +6,7 @@
         <div class="meta">
             <time class="published">{{ journal['publish_time'] }}</time>
             <a href="/profile/{{ journal['author_id'] }}" class="author">
-                <span class="name">{{ login_user['account'] }}</span>
+                <span class="name">{{ journal['account'] }}</span>
                 <img src="{{ journal['author_profile_photo'] }}" alt="avatar">
             </a>
         </div>
@@ -20,9 +20,18 @@
             <li><a href="/journal/{{ journal['id'] }}" class="button large">阅读全文</a></li>
         </ul>
         <ul class="stats">
-            <li><a href="/account/{{ login_user['id'] }}">{{ login_user['account'] }}</a></li>
+            <li><a href="/profile/{{ journal['author_id'] }}">{{ journal['account'] }}</a></li>
             <li><i class="icon solid fa-heart">{{ journal['like_num'] }}</i></li>
             <li><i class="icon solid fa-comment">{{ journal['comment_num'] }}</i></li>
         </ul>
+        {% if login_user %}
+        <ul class="actions">
+            <li>
+                <button class="button small" onclick="deleteJournalFromList({{ journal['id'] }})" style="background-color: #dc3545; color: white;">
+                    <i class="fas fa-trash me-1"></i>删除
+                </button>
+            </li>
+        </ul>
+        {% endif %}
     </footer>
 </article>

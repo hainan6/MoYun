@@ -1,4 +1,10 @@
-"""后端主要的功能文件"""
+"""
+Legacy Application Entry Point
+Preserved for backward compatibility - Consider using application.py for new deployments
+
+This file maintains the original structure for compatibility with existing deployments.
+For new features and better architecture, please use the refactored application.py
+"""
 import os
 
 from flask import Flask
@@ -8,6 +14,14 @@ from service.database.DAO import Database
 from service.File import FileManager
 from service.Network import API, Mail
 from service.response import *
+
+# Add deprecation warning
+import warnings
+warnings.warn(
+    "app.py is deprecated. Please consider migrating to application.py for better architecture and features.",
+    DeprecationWarning,
+    stacklevel=2
+)
 
 # 创建全局变量：应用、服务
 app = Flask(

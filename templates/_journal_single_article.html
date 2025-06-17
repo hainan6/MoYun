@@ -35,5 +35,14 @@
             </li>
             <li><i class="icon solid fa-comment" id="comment_num">{{ journal['comment_num'] }}</i></li>
         </ul>
+        {% if login_user %}
+        <ul class="actions">
+            <li>
+                <button class="button small" onclick="deleteJournal()" style="background-color: #dc3545; color: white;">
+                    <i class="fas fa-trash me-1"></i>删除书评
+                </button>
+            </li>
+        </ul>
+        {% endif %}
     </footer>
 </article>
