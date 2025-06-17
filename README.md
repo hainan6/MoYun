@@ -352,9 +352,9 @@ python tornadoApp.py
 
 ## 📞 联系我们
 
-- **GitHub**：[Steven-Zhl/MoYun](https://github.com/Steven-Zhl/MoYun)
-- **Issue反馈**：[提交问题](https://github.com/Steven-Zhl/MoYun/issues)
-- **讨论区**：[参与讨论](https://github.com/Steven-Zhl/MoYun/discussions)
+- **GitHub**：[hainan6/MoYun](https://github.com/hainan6/MoYun)
+- **Issue反馈**：[提交问题](https://github.com/hainan6/MoYun/issues)
+- **讨论区**：[参与讨论](https://github.com/hainan6/MoYun/discussions)
 
 ---
 
