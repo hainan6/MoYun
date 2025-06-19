@@ -189,8 +189,32 @@ flask run
 
 ## 🙏 致谢
 
+<<<<<<< HEAD
 -   模板设计灵感来自 [HTML5 UP](https://html5up.net/)。
 -   感谢所有为本项目贡献过代码和想法的开发者。
+=======
+### 🎨 设计资源
+- **HTML模板**
+  - [Dimension | HTML5 UP](https://html5up.net/dimension) - 现代化响应式模板
+  - [Future Imperfect | HTML5 UP](https://html5up.net/future-imperfect) - 博客风格模板
+- **Logo设计**：[AIDesign](https://ailogo.qq.com/guide/brandname) - AI辅助Logo生成
+
+### 🔗 第三方API
+- **[今日诗词](https://www.jinrishici.com/)**：为首页增添文化气息
+- **[一刻天气](https://tianqiapi.com/index/doc?version=v61)**：实时天气信息服务
+- **[通义千问](https://help.aliyun.com/zh/dashscope/developer-reference/model-introduction)**：AI智能助手核心
+
+### 📚 技术参考
+- [Flask官方文档](https://dormousehole.readthedocs.io/en/latest/index.html)
+- [CSS MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS)
+- [AJAX教程](https://www.runoob.com/ajax/ajax-tutorial.html)
+
+## 📞 联系我们
+
+- **GitHub**：[hainan6/MoYun](https://github.com/hainan6/MoYun)
+- **Issue反馈**：[提交问题](https://github.com/hainan6/MoYun/issues)
+- **讨论区**：[参与讨论](https://github.com/hainan6/MoYun/discussions)
+>>>>>>> 4510913e9a2e3291903a4bb35be33760d959f307
 
 ---
 <p align="center">
