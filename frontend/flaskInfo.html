@@ -1,0 +1,7 @@
+<!-- Flask 消息闪现组件 -->
+<!-- 用于显示后端通过 flash 传递的提示信息 -->
+<div id="flask-info" class="flask-info">
+    {% for message in get_flashed_messages() %}
+        <div class="message">{{ message }}</div>
+    {% endfor %}
+</div>

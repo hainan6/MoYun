@@ -1,30 +1,40 @@
+<!-- 书评文章卡片组件 -->
 <article class="post">
+    <!-- 文章头部：标题与作者信息 -->
     <header>
         <div class="title">
+            <!-- 书评标题，点击可进入详情页 -->
             <h2><a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a></h2>
         </div>
         <div class="meta">
+            <!-- 发布时间 -->
             <time class="published">{{ journal['publish_time'] }}</time>
+            <!-- 作者信息，点击头像或昵称可进入作者主页 -->
             <a href="/profile/{{ journal['author_id'] }}" class="author">
                 <span class="name">{{ journal['account'] }}</span>
                 <img src="{{ journal['author_profile_photo'] }}" alt="avatar">
             </a>
         </div>
     </header>
+    <!-- 头图，点击可进入详情页 -->
     <a href="/journal/{{ journal['id'] }}" class="image featured">
         <img src="{{ journal['header_path'] }}" alt="{{ journal['title'] }}_头图"/>
     </a>
+    <!-- 书评摘要（首段） -->
     <p>{{ journal['first_paragraph'] }}</p>
     <footer>
+        <!-- 阅读全文按钮 -->
         <ul class="actions">
             <li><a href="/journal/{{ journal['id'] }}" class="button large">阅读全文</a></li>
         </ul>
+        <!-- 统计信息：作者、点赞数、评论数 -->
         <ul class="stats">
             <li><a href="/profile/{{ journal['author_id'] }}">{{ journal['account'] }}</a></li>
             <li><i class="icon solid fa-heart">{{ journal['like_num'] }}</i></li>
             <li><i class="icon solid fa-comment">{{ journal['comment_num'] }}</i></li>
         </ul>
         {% if login_user %}
+        <!-- 删除按钮，仅登录用户可见 -->
         <ul class="actions">
             <li>
                 <button class="button small" onclick="deleteJournalFromList({{ journal['id'] }})" style="background-color: #dc3545; color: white;">

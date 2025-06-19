@@ -1,0 +1,668 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ discussion['title'] }} | 墨韵 - 帖子</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 继承现代化样式 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding-top: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 讨论帖子主卡片 */
+        .discussion-main-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .discussion-main-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+        }
+
+        .discussion-header {
+            padding: 2rem 2rem 1rem;
+            background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .discussion-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            text-decoration: none;
+        }
+
+        .discussion-title:hover {
+            color: #667eea;
+        }
+
+        .discussion-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .discussion-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .discussion-author:hover {
+            color: #667eea;
+        }
+
+        .discussion-author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .discussion-author:hover .discussion-author-avatar {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .discussion-content {
+            padding: 2rem;
+            line-height: 1.8;
+            font-size: 1.05rem;
+            color: #333;
+        }
+
+        .discussion-content p {
+            margin-bottom: 1rem;
+        }
+
+        /* 回复输入区域 */
+        .reply-input-section {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .reply-input-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .reply-input-container {
+            display: flex;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .reply-input {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: white;
+            resize: none;
+        }
+
+        .reply-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        .reply-input::placeholder {
+            color: #a0a6b1;
+        }
+
+        .reply-btn {
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .reply-btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+        }
+
+        .reply-btn-primary:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(74, 108, 247, 0.3);
+        }
+
+        .reply-btn-secondary {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            color: white;
+        }
+
+        .reply-btn-secondary:hover {
+            background: linear-gradient(135deg, #48bb78 0%, var(--accent-color) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(28, 200, 138, 0.3);
+        }
+
+        /* 回复列表 */
+        .replies-section {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+        }
+
+        .replies-header {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .replies-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .reply-item {
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .reply-item:last-child {
+            border-bottom: none;
+        }
+
+        .reply-item:hover {
+            background: #f8f9fc;
+        }
+
+        .reply-card {
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .reply-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .reply-avatar:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .reply-content-wrapper {
+            flex: 1;
+        }
+
+        .reply-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 0.75rem;
+        }
+
+        .reply-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .reply-author-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .reply-author-link:hover {
+            color: #667eea;
+        }
+
+        .reply-time {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .empty-state h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .discussion-header {
+                padding: 1.5rem 1.5rem 1rem;
+            }
+
+            .discussion-title {
+                font-size: 1.5rem;
+            }
+
+            .discussion-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .discussion-content {
+                padding: 1.5rem;
+                font-size: 1rem;
+            }
+
+            .reply-input-section {
+                padding: 1rem;
+            }
+
+            .reply-input-container {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .reply-btn {
+                padding: 0.75rem 1.25rem;
+            }
+
+            .reply-card {
+                padding: 1rem;
+                gap: 0.75rem;
+            }
+
+            .reply-avatar {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* 动画效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 特殊样式调整 */
+        .discussion-main-card:hover {
+            box-shadow: var(--shadow-light);
+        }
+
+        .replies-section:hover {
+            box-shadow: var(--shadow-light);
+        }
+
+        .reply-input-section:hover {
+            box-shadow: var(--shadow-light);
+        }
+    </style>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <div class="content-wrapper">
+            <!-- 主要讨论帖子 -->
+            <div class="discussion-main-card fade-in">
+                <div class="discussion-header">
+                    <h1 class="discussion-title">
+                        <a href="/discussion/{{ discussion['id'] }}">{{ discussion['title'] }}</a>
+                    </h1>
+                    <div class="discussion-meta">
+                        <span class="reply-time">
+                            <i class="fas fa-clock me-1"></i>
+                            {{ discussion['post_time'] }}
+                        </span>
+                        <a href="/profile/{{ author['id'] }}" class="discussion-author">
+                            <img src="{{ author['profile_photo'] }}" alt="{{ author['account'] }}" class="discussion-author-avatar">
+                            <span>{{ author['account'] }}</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="discussion-content">
+                    <p>{{ discussion['content'] }}</p>
+                </div>
+            </div>
+
+            <!-- 回复输入区域 -->
+            <div class="reply-input-section fade-in">
+                <div class="reply-input-header">
+                    <i class="fas fa-comment-dots me-2"></i>
+                    发表回复
+                </div>
+                <div class="reply-input-container">
+                    <input type="text" name="reply_content" id="reply_content" class="reply-input" placeholder="分享你的想法...">
+                    <button onclick="addReply()" class="reply-btn reply-btn-primary">
+                        <i class="fas fa-paper-plane me-2"></i>发布
+                    </button>
+                    <button id="chatButton" type="button" class="reply-btn reply-btn-secondary">
+                        <i class="fas fa-robot me-2"></i>AI辅助
+                    </button>
+                </div>
+            </div>
+
+            {% include '_chat_box.html' %}
+
+            <!-- 回复列表 -->
+            <div class="replies-section fade-in">
+                <div class="replies-header">
+                    <i class="fas fa-comments me-2"></i>
+                    全部回复 ({{ discussion_reply|length }})
+                </div>
+                
+                {% if discussion_reply %}
+                    <ul class="replies-list" id="replies">
+                        {% for reply in discussion_reply %}
+                            <li class="reply-item">
+                                <div class="reply-card">
+                                    <a href="/profile/{{ reply['author_id'] }}" class="reply-avatar-link">
+                                        <img src="{{ reply['profile_photo'] }}" alt="{{ reply['account'] }}_头像" class="reply-avatar">
+                                    </a>
+                                    <div class="reply-content-wrapper">
+                                        <div class="reply-content">{{ reply['content'] }}</div>
+                                        <div class="reply-meta">
+                                            <a href="/profile/{{ reply['author_id'] }}" class="reply-author-link">{{ reply['account'] }}</a>
+                                            <span class="reply-time">
+                                                <i class="fas fa-clock me-1"></i>
+                                                {{ reply['reply_time'] }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-comments"></i>
+                        <h4>暂无回复</h4>
+                        <p>成为第一个回复的人吧！</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+
+<!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% include '_scripts.html' %}
+
+<script type="text/javascript">
+    function addReply() {
+        $.ajax({
+            type: 'POST',
+            url: '/discussion/{{ discussion['id'] }}',
+            dataType: 'json',
+            data: {
+                'reply_content': $('input[name="reply_content"]').val()
+            },
+            // 如果reply为空，则不发送请求
+            beforeSend: function () {
+                if ($('input[name="reply_content"]').val() === '') {
+                    document.getElementById('flask-info').innerHTML = '<div class="message">评论不能为空</div>';
+                    reloadFlaskInfo();
+                    return false;
+                }
+            },
+            success: function (response) {
+                // 检查是否有空状态显示，如果有则隐藏
+                const emptyState = document.querySelector('.empty-state');
+                if (emptyState) {
+                    emptyState.style.display = 'none';
+                }
+                
+                // 确保回复列表存在
+                let repliesList = document.getElementById('replies');
+                if (!repliesList) {
+                    // 如果之前是空状态，创建回复列表
+                    const repliesSection = document.querySelector('.replies-section');
+                    repliesSection.innerHTML = `
+                        <div class="replies-header">
+                            <i class="fas fa-comments me-2"></i>
+                            全部回复 (1)
+                        </div>
+                        <ul class="replies-list" id="replies"></ul>
+                    `;
+                    repliesList = document.getElementById('replies');
+                }
+                
+                const new_reply_element = document.createElement('li');
+                new_reply_element.className = 'reply-item';
+                new_reply_element.innerHTML = `
+                    <div class="reply-card">
+                        <a href="/profile/${response.author_id}" class="reply-avatar-link">
+                            <img src="${response.author_profile_photo}" alt="${response.account}_头像" class="reply-avatar">
+                        </a>
+                        <div class="reply-content-wrapper">
+                            <div class="reply-content">${response.reply_content}</div>
+                            <div class="reply-meta">
+                                <a href="/profile/${response.author_id}" class="reply-author-link">${response.account}</a>
+                                <span class="reply-time">
+                                    <i class="fas fa-clock me-1"></i>
+                                    ${response.reply_time}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 添加新回复到列表顶部
+                repliesList.insertBefore(new_reply_element, repliesList.firstChild);
+                
+                // 添加动画效果
+                new_reply_element.style.opacity = '0';
+                new_reply_element.style.transform = 'translateY(-20px)';
+                new_reply_element.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    new_reply_element.style.opacity = '1';
+                    new_reply_element.style.transform = 'translateY(0)';
+                }, 50);
+                
+                // 更新回复数量
+                const repliesHeader = document.querySelector('.replies-header');
+                const currentCount = repliesList.children.length;
+                repliesHeader.innerHTML = `
+                    <i class="fas fa-comments me-2"></i>
+                    全部回复 (${currentCount})
+                `;
+                
+                // 清空输入框
+                document.getElementById('reply_content').value = '';
+                
+                // 显示成功消息
+                document.getElementById('flask-info').innerHTML = '<div class="message">评论成功</div>';
+                reloadFlaskInfo();
+                
+                return true;
+            }
+        });
+    }
+    
+    // 页面加载动画
+    document.addEventListener('DOMContentLoaded', function() {
+        const elements = document.querySelectorAll('.fade-in');
+        elements.forEach((element, index) => {
+            setTimeout(() => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }, 50);
+            }, index * 200);
+        });
+    });
+    
+    // 回车键发送回复
+    document.getElementById('reply_content').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addReply();
+        }
+    });
+</script>
+
+</body>
+
+</html>

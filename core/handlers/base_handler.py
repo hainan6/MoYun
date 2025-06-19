@@ -1,7 +1,24 @@
 """
-Base Handler Module
-Provides base functionality for all request handlers
+基础请求处理器模块
+================
+
+本模块提供了所有请求处理器的基础功能实现。
+
+主要功能:
+    - 用户认证和授权
+    - 会话管理
+    - 表单数据处理
+    - 消息闪现
+    - 模板渲染
+    - 数据库操作异常处理
+    - 分页参数处理
+
+依赖:
+    - flask: Web框架
+    - core.data: 数据库管理
+    - core.modules.file_manager: 文件系统管理
 """
+
 from typing import Optional, Dict, Any, Union
 from flask import session, request, flash, redirect, url_for, render_template
 from functools import wraps
@@ -11,63 +28,74 @@ from core.modules.file_manager import FileSystemManager
 
 
 class HandlerError(Exception):
-    """Custom exception for handler-related errors"""
+    """处理器相关的自定义异常类"""
     pass
 
 
 class BaseHandler:
     """
-    Base handler class providing common functionality for all route handlers
+    基础处理器类，为所有路由处理器提供通用功能
+    
+    主要职责:
+        1. 用户认证和会话管理
+        2. 请求数据处理和验证
+        3. 用户消息管理
+        4. 视图渲染
+        5. 数据库操作
+        6. 文件系统操作
     """
     
     def __init__(self, database_manager: DatabaseManager, file_manager: FileSystemManager):
         """
-        Initialize base handler
+        初始化基础处理器
         
-        Args:
-            database_manager: Database manager instance
-            file_manager: File manager instance
+        参数:
+            database_manager: 数据库管理器实例
+            file_manager: 文件管理器实例
         """
         self.db = database_manager
         self.file_manager = file_manager
     
     def get_current_user(self) -> Optional[UserData]:
         """
-        Get currently logged in user
+        获取当前登录用户信息
         
-        Returns:
-            Current user data or None if not logged in
+        返回:
+            当前用户数据，如未登录则返回 None
         """
         return session.get("login_user")
     
     def is_authenticated(self) -> bool:
         """
-        Check if user is authenticated
+        检查用户是否已认证
         
-        Returns:
-            True if user is logged in, False otherwise
+        返回:
+            如果用户已登录返回 True，否则返回 False
         """
         return self.get_current_user() is not None
     
     def get_user_id(self) -> Optional[int]:
         """
-        Get current user ID
+        获取当前用户ID
         
-        Returns:
-            User ID or None if not logged in
+        返回:
+            用户ID，如未登录则返回 None
         """
         user = self.get_current_user()
         return user.get("id") if user else None
     
     def require_authentication(self, func):
         """
-        Decorator to require authentication for a route
+        要求用户认证的装饰器
         
-        Args:
-            func: Route function to protect
+        参数:
+            func: 需要保护的路由函数
             
-        Returns:
-            Decorated function
+        返回:
+            装饰后的函数
+            
+        说明:
+            如果用户未登录，将重定向到首页并显示提示消息
         """
         @wraps(func)
         def decorated_function(*args, **kwargs):
@@ -79,13 +107,16 @@ class BaseHandler:
     
     def require_role(self, required_role: str):
         """
-        Decorator to require specific user role
+        要求特定用户角色的装饰器
         
-        Args:
-            required_role: Required user role
+        参数:
+            required_role: 所需的用户角色
             
-        Returns:
-            Decorator function
+        返回:
+            装饰器函数
+            
+        说明:
+            检查用户是否登录且具有所需角色，否则重定向
         """
         def decorator(func):
             @wraps(func)
@@ -105,13 +136,16 @@ class BaseHandler:
     
     def safe_get_form_data(self, *fields) -> Dict[str, str]:
         """
-        Safely get form data
+        安全获取表单数据
         
-        Args:
-            *fields: Field names to extract
+        参数:
+            *fields: 要提取的字段名列表
             
-        Returns:
-            Dictionary of field values
+        返回:
+            包含字段值的字典
+            
+        说明:
+            自动去除字段值的首尾空白字符
         """
         data = {}
         for field in fields:
@@ -120,13 +154,16 @@ class BaseHandler:
     
     def safe_get_args(self, *fields) -> Dict[str, str]:
         """
-        Safely get URL arguments
+        安全获取URL参数
         
-        Args:
-            *fields: Field names to extract
+        参数:
+            *fields: 要提取的参数名列表
             
-        Returns:
-            Dictionary of argument values
+        返回:
+            包含参数值的字典
+            
+        说明:
+            自动去除参数值的首尾空白字符
         """
         data = {}
         for field in fields:
@@ -135,14 +172,14 @@ class BaseHandler:
     
     def validate_required_fields(self, data: Dict[str, str], *required_fields) -> bool:
         """
-        Validate that required fields are present and not empty
+        验证必填字段
         
-        Args:
-            data: Data dictionary to validate
-            *required_fields: Required field names
+        参数:
+            data: 要验证的数据字典
+            *required_fields: 必填字段名列表
             
-        Returns:
-            True if all required fields are present, False otherwise
+        返回:
+            如果所有必填字段都存在且非空则返回 True，否则返回 False
         """
         for field in required_fields:
             if not data.get(field):
@@ -150,31 +187,34 @@ class BaseHandler:
         return True
     
     def flash_error(self, message: str) -> None:
-        """Flash an error message"""
+        """闪现错误消息"""
         flash(message, "error")
     
     def flash_success(self, message: str) -> None:
-        """Flash a success message"""
+        """闪现成功消息"""
         flash(message, "success")
     
     def flash_warning(self, message: str) -> None:
-        """Flash a warning message"""
+        """闪现警告消息"""
         flash(message, "warning")
     
     def flash_info(self, message: str) -> None:
-        """Flash an info message"""
+        """闪现提示消息"""
         flash(message, "info")
     
     def render_with_user_context(self, template: str, **kwargs) -> str:
         """
-        Render template with user context
+        使用用户上下文渲染模板
         
-        Args:
-            template: Template file name
-            **kwargs: Additional template variables
+        参数:
+            template: 模板文件名
+            **kwargs: 额外的模板变量
             
-        Returns:
-            Rendered template
+        返回:
+            渲染后的HTML字符串
+            
+        说明:
+            自动添加当前用户信息和认证状态到模板上下文
         """
         context = {
             'current_user': self.get_current_user(),
@@ -185,21 +225,22 @@ class BaseHandler:
     
     def login_user(self, user_data: UserData) -> None:
         """
-        Login user and set session data
+        登录用户并设置会话数据
         
-        Args:
-            user_data: User data to store in session
+        参数:
+            user_data: 要存储在会话中的用户数据
+            
+        说明:
+            自动添加用户头像路径到用户数据中
         """
-        # Add profile photo path
         user_data_with_photo = user_data.copy()
         user_data_with_photo["profile_photo"] = self.file_manager.get_profile_photo_path(user_data["id"])
         
         session["login_user"] = user_data_with_photo
     
     def logout_user(self) -> None:
-        """Logout current user"""
-        if "login_user" in session:
-            session.pop("login_user")
+        """注销当前用户，清除会话数据"""
+        session.pop("login_user", None)
     
     def handle_database_error(self, error: Exception, user_message: str = "操作失败，请稍后重试") -> None:
         """

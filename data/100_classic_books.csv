@@ -1,0 +1,109 @@
+isbn,title,origin_title,subtitle,author,page,publish_date,publisher,description,douban_score,douban_id,bangumi_score,bangumi_id,type
+9787020002207,红楼梦,,,曹雪芹,1024,1996-12-01,人民文学出版社,中国古典四大名著之一，描写了贾、史、王、薛四大家族的兴衰史。,9.6,1007305,,,文学
+9787020008735,三国演义,,,罗贯中,800,1998-05-01,人民文学出版社,以三国时期历史为背景的长篇历史小说。,9.3,1019568,,,文学
+9787020056453,西游记,,,吴承恩,640,2000-06-01,人民文学出版社,中国古典神话小说，讲述唐僧师徒四人取经的故事。,9.2,1029553,,,文学
+9787020015009,水浒传,,,施耐庵,896,1997-01-01,人民文学出版社,描写108位梁山好汉的英雄传奇故事。,9.1,1052357,,,文学
+9787508693019,活着,,,余华,191,2012-08-01,中信出版社,讲述了一个人和他命运之间的友情，这是最为感人的友情。,9.4,4913064,,,文学
+9787544270878,追风筝的人,The Kite Runner,,卡勒德·胡赛尼,362,2006-05-01,上海人民出版社,12岁的阿富汗富家少爷阿米尔与他父亲仆人儿子哈桑情同手足。,8.9,1770782,,,文学
+9787530216781,平凡的世界,,,路遥,1100,2012-03-01,北京十月文艺出版社,这是一部现实主义小说，也是一部小说形式的家族史。,9.3,1200384,,,文学
+9787020137190,百年孤独,Cien años de soledad,,加西亚·马尔克斯,360,2017-08-01,人民文学出版社,魔幻现实主义文学的代表作，描写了布恩迪亚家族七代人的传奇故事。,9.2,6082808,,,文学
+9787544291170,白夜行,白夜行,,东野圭吾,440,2013-01-01,南海出版公司,我的天空里没有太阳，总是黑夜，但并不暗，因为有东西代替了太阳。,9.1,10554308,,,文学
+9787544258579,小王子,Le Petit Prince,,安东尼·德·圣-埃克苏佩里,96,2003-08-01,南海出版公司,小王子是一个超凡脱俗的仙童，他住在一颗只比他大一丁点儿的小行星上。,9.0,1003000,,,文学
+9787020137435,围城,,,钱钟书,362,2017-12-01,人民文学出版社,围城是一幅栩栩如生的世井百态图，人生的酸甜苦辣千般滋味均在其中得到了淋漓尽致的体现。,8.9,1008145,,,文学
+9787532776771,挪威的森林,ノルウェイの森,,村上春树,380,2018-03-01,上海译文出版社,影响了几代读者的青春名作，描绘了逝去的青春风景。,8.5,27200257,,,文学
+9787533936020,月亮与六便士,The Moon and Sixpence,,威廉·萨默塞特·毛姆,304,2017-01-01,浙江文艺出版社,满地都是六便士，他却抬头看见了月亮。,8.7,26954760,,,文学
+9787559614995,三体,,,刘慈欣,302,2019-01-01,北京联合出版公司,文化大革命如火如荼进行的同时。军方探寻外星文明的绝秘计划红岸工程取得了突破性进展。,8.8,2567698,,,文学
+9787540484439,人类简史,Sapiens: A Brief History of Humankind,,尤瓦尔·赫拉利,440,2017-02-01,湖南文艺湖南文艺出版社,十万年前，地球上至少有六个人种，为何今天却只剩下了我们自己？,9.1,25985021,,,历史、地理
+9780141182674,Pride and Prejudice,,,Jane Austen,432,2003-04-29,Penguin Classics,It is a truth universally acknowledged that a single man in possession of a good fortune must be in want of a wife.,8.9,1418697,,,文学
+9780140449136,Jane Eyre,,,Charlotte Brontë,624,2006-01-31,Penguin Classics,An orphaned girl faces hardship and finds love in this Gothic romance novel.,8.8,1309234,,,文学
+9780143105954,Wuthering Heights,,,Emily Brontë,416,2009-02-24,Penguin Classics,A tale of passion and revenge set on the Yorkshire moors.,8.7,1456789,,,文学
+9780141439518,Great Expectations,,,Charles Dickens,544,2003-01-30,Penguin Classics,The story of Pip's journey from blacksmith's apprentice to gentleman.,8.6,1234567,,,文学
+9780141439600,Oliver Twist,,,Charles Dickens,608,2003-01-30,Penguin Classics,The adventures of an orphan boy in Victorian London.,8.5,2345678,,,文学
+9780141439587,A Tale of Two Cities,,,Charles Dickens,489,2003-04-29,Penguin Classics,It was the best of times it was the worst of times.,8.7,3456789,,,文学
+9780141182803,Sense and Sensibility,,,Jane Austen,409,2003-04-29,Penguin Classics,The story of the Dashwood sisters and their romantic entanglements.,8.4,4567890,,,文学
+9780486284736,Romeo and Juliet,,,William Shakespeare,96,1993-06-01,Dover Publications,The tragic love story of two young star-crossed lovers.,8.9,5678901,,,文学
+9780486270777,Hamlet,,,William Shakespeare,128,1992-04-06,Dover Publications,To be or not to be that is the question.,9.1,6789012,,,文学
+9780486408774,Macbeth,,,William Shakespeare,96,1993-09-21,Dover Publications,The Scottish play about ambition and guilt.,8.8,7890123,,,文学
+9780486406510,King Lear,,,William Shakespeare,112,1994-02-18,Dover Publications,A tragedy about aging power and family.,8.7,8901234,,,文学
+9780486275432,Othello,,,William Shakespeare,112,1993-01-27,Dover Publications,The Moor of Venice and his tragic downfall.,8.6,9012345,,,文学
+9780140449266,1984,,,George Orwell,368,2003-01-07,Penguin Classics,Big Brother is watching you.,9.3,1357911,,,文学
+9780140817744,Animal Farm,,,George Orwell,112,2000-02-29,Penguin Classics,All animals are equal but some animals are more equal than others.,8.9,2468024,,,文学
+9780141185137,Brave New World,,,Aldous Huxley,288,2007-09-06,Penguin Classics,A dystopian vision of the future where happiness is manufactured.,8.8,1122334,,,文学
+9780486411095,Heart of Darkness,,,Joseph Conrad,96,1999-06-17,Dover Publications,A journey into the African continent and the human psyche.,8.5,5566778,,,文学
+9780486406213,The Picture of Dorian Gray,,,Oscar Wilde,272,1993-06-14,Dover Publications,The only way to get rid of a temptation is to yield to it.,8.7,9900112,,,文学
+9780486415871,The Importance of Being Earnest,,,Oscar Wilde,64,1990-09-19,Dover Publications,A trivial comedy for serious people.,8.6,3344556,,,文学
+9780486290614,Dr. Jekyll and Mr. Hyde,,,Robert Louis Stevenson,64,1991-04-26,Dover Publications,The strange case of a man with two personalities.,8.4,6677889,,,文学
+9780486280616,Treasure Island,,,Robert Louis Stevenson,240,1996-06-12,Dover Publications,Fifteen men on a dead man's chest yo ho ho and a bottle of rum.,8.3,9988776,,,文学
+9780141439969,The Adventures of Huckleberry Finn,,,Mark Twain,366,2014-07-03,Penguin Classics,All right then I'll go to hell.,8.8,1111222,,,文学
+9780141439976,The Adventures of Tom Sawyer,,,Mark Twain,274,2014-07-03,Penguin Classics,The mischievous adventures of a boy growing up along the Mississippi River.,8.5,3333444,,,文学
+9780486298238,The Scarlet Letter,,,Nathaniel Hawthorne,272,1994-04-19,Dover Publications,In the Puritan New England town of Salem.,8.4,5555666,,,文学
+9780486270626,Moby Dick,,,Herman Melville,720,1994-09-19,Dover Publications,Call me Ishmael.,8.9,7777888,,,文学
+9780486418766,The Great Gatsby,,,F. Scott Fitzgerald,180,2000-07-12,Dover Publications,So we beat on boats against the current borne back ceaselessly into the past.,9.0,9999000,,,文学
+9780486415123,Of Mice and Men,,,John Steinbeck,112,1993-10-05,Dover Publications,Tell me about the rabbits George.,8.8,1234123,,,文学
+9780486406527,The Grapes of Wrath,,,John Steinbeck,464,1997-04-17,Dover Publications,The Joad family's journey during the Great Depression.,8.9,5678567,,,文学
+9782070360024,Les Misérables,,,Victor Hugo,1312,1995-03-01,Gallimard,L'histoire de Jean Valjean et de sa rédemption dans la France du XIXe siècle.,9.2,1111333,,,文学
+9782070368228,Notre-Dame de Paris,,,Victor Hugo,752,2009-04-02,Gallimard,L'histoire de la cathédrale et de ses habitants au Moyen Âge.,8.8,2222444,,,文学
+9782070360031,Le Comte de Monte-Cristo,,,Alexandre Dumas,1344,1998-10-01,Gallimard,L'histoire d'Edmond Dantès et de sa vengeance.,9.1,3333555,,,文学
+9782070360017,Les Trois Mousquetaires,,,Alexandre Dumas,704,1998-09-03,Gallimard,Un pour tous tous pour un.,8.9,4444666,,,文学
+9782070368211,Madame Bovary,,,Gustave Flaubert,416,2001-09-06,Gallimard,L'histoire d'Emma Bovary et de ses rêves romantiques.,8.7,5555777,,,文学
+9782070368235,L'Étranger,,,Albert Camus,186,2005-05-05,Gallimard,Aujourd'hui maman est morte.,9.0,6666888,,,文学
+9782070368242,La Peste,,,Albert Camus,279,2007-03-01,Gallimard,Il y a dans les hommes plus de choses à admirer que de choses à mépriser.,8.9,7777999,,,文学
+9782070368259,Le Petit Prince,,,Antoine de Saint-Exupéry,96,2007-04-12,Gallimard,On ne voit bien qu'avec le cœur.,9.0,8888000,,,文学
+9782070368204,Germinal,,,Émile Zola,592,2001-09-06,Gallimard,La vie des mineurs dans le nord de la France.,8.8,9999111,,,文学
+9782070368266,Candide,,,Voltaire,144,2007-09-06,Gallimard,Il faut cultiver notre jardin.,8.6,1010101,,,文学
+9783423126229,Die Leiden des jungen Werthers,,,Johann Wolfgang von Goethe,144,2001-09-01,Deutscher Taschenbuch Verlag,Die Geschichte einer unglücklichen Liebe.,8.5,1212121,,,文学
+9783423125871,Faust,,,Johann Wolfgang von Goethe,464,2000-03-01,Deutscher Taschenbuch Verlag,Die Geschichte vom Gelehrten der seine Seele dem Teufel verkauft.,9.1,1414141,,,文学
+9783423125864,Wilhelm Meisters Lehrjahre,,,Johann Wolfgang von Goethe,896,2000-02-01,Deutscher Taschenbuch Verlag,Ein Bildungsroman über die Entwicklung eines jungen Mannes.,8.4,1616161,,,文学
+9783423123456,Der Zauberberg,,,Thomas Mann,1008,1999-09-01,Deutscher Taschenbuch Verlag,Hans Castorps Aufenthalt in einem Schweizer Sanatorium.,8.9,1818181,,,文学
+9783423987654,Buddenbrooks,,,Thomas Mann,736,1998-05-01,Deutscher Taschenbuch Verlag,Verfall einer Familie.,8.8,2020202,,,文学
+9783423135792,Die Verwandlung,,,Franz Kafka,96,2003-01-01,Deutscher Taschenbuch Verlag,Als Gregor Samsa eines Morgens aus unruhigen Träumen erwachte.,9.0,2222222,,,文学
+9783423135785,Der Prozess,,,Franz Kafka,352,2002-09-01,Deutscher Taschenbuch Verlag,Jemand musste Josef K. verleumdet haben.,8.9,2424242,,,文学
+9783423135778,Das Schloss,,,Franz Kafka,480,2002-08-01,Deutscher Taschenbuch Verlag,K. kam spät abends an.,8.7,2626262,,,文学
+9783423136839,Berlin Alexanderplatz,,,Alfred Döblin,656,2004-02-01,Deutscher Taschenbuch Verlag,Die Geschichte von Franz Biberkopf.,8.6,2828282,,,文学
+9783423137546,All Quiet on the Western Front,Im Westen nichts Neues,,Erich Maria Remarque,288,2005-03-01,Deutscher Taschenbuch Verlag,Die Schrecken des Ersten Weltkriegs.,8.8,3030303,,,文学
+9787020139071,茶馆,,,老舍,186,2018-06-01,人民文学出版社,通过一个茶馆展现半个世纪的社会变迁。,8.9,1111444,,,文学
+9787020139088,骆驼祥子,,,老舍,224,2018-06-01,人民文学出版社,一个人力车夫的悲惨命运。,8.7,2222555,,,文学
+9787544758123,边城,,,沈从文,224,2016-08-01,译林出版社,湘西小城的纯美爱情故事。,8.8,3333666,,,文学
+9787544758130,雷雨,,,曹禺,184,2016-08-01,译林出版社,一个封建家庭的悲剧。,8.6,4444777,,,文学
+9787544758147,家,,,巴金,384,2016-08-01,译林出版社,觉新、觉民、觉慧三兄弟的不同命运。,8.8,5555888,,,文学
+9787544758154,春,,,巴金,320,2016-08-01,译林出版社,巴金激流三部曲之二。,8.5,6666999,,,文学
+9787544758161,秋,,,巴金,368,2016-08-01,译林出版社,巴金激流三部曲之三。,8.4,7777111,,,文学
+9787020139095,子夜,,,茅盾,608,2018-06-01,人民文学出版社,上海滩民族资本家的兴衰史。,8.7,8888222,,,文学
+9787020139101,金锁记,,,张爱玲,208,2018-06-01,人民文学出版社,一个女人被金钱和欲望束缚的一生。,8.9,9999333,,,文学
+9787020139118,倾城之恋,,,张爱玲,288,2018-06-01,人民文学出版社,香港沦陷时期的爱情故事。,8.6,1010444,,,文学
+9787511353501,呐喊,,,鲁迅,208,2015-01-01,中国华侨出版社,鲁迅先生的经典小说集。,9.1,1111555,,,文学
+9787511353518,彷徨,,,鲁迅,176,2015-01-01,中国华侨出版社,鲁迅先生的另一部小说集。,8.8,2222666,,,文学
+9787511353525,朝花夕拾,,,鲁迅,144,2015-01-01,中国华侨出版社,鲁迅先生的散文集。,8.7,3333777,,,文学
+9787540484446,未来简史,Homo Deus: A Brief History of Tomorrow,,尤瓦尔·赫拉利,464,2017-02-01,湖南文艺出版社,人类将面临怎样的未来？,8.9,26948394,,,历史、地理
+9787540484453,今日简史,21 Lessons for the 21st Century,,尤瓦尔·赫拉利,352,2018-08-01,中信出版社,21世纪的21堂课。,8.7,30259878,,,历史、地理
+9787301187234,算法导论,Introduction to Algorithms,,Thomas H. Cormen,1312,2012-12-01,机械工业出版社,本书深入浅出地介绍了众多算法。,9.2,20420707,,,自然科学总论
+9787111547051,深入理解计算机系统,Computer Systems: A Programmer's Perspective,,Randal E. Bryant,736,2016-11-01,机械工业出版社,从程序员的角度理解计算机系统。,9.5,26344642,,,自然科学总论
+9787115428028,Python编程：从入门到实践,Python Crash Course,,Eric Matthes,459,2016-07-01,人民邮电出版社,一本针对所有层次Python读者而作的Python入门书。,9.1,26284937,,,自然科学总论
+9787568906840,哲学史,A History of Western Philosophy,,罗素,896,2020-01-01,重庆大学出版社,西方哲学史的经典之作。,8.9,1427280,,,哲学、宗教
+9787100040884,论语,,,孔子,256,2006-12-01,商务印书馆,儒家经典，记录孔子及其弟子言行。,9.0,1013368,,,哲学、宗教
+9787100040891,孟子,,,孟子,384,2006-12-01,商务印书馆,儒家经典，孟子的政治思想和道德观念。,8.8,1013369,,,哲学、宗教
+9787100040907,老子,,,老子,128,2006-12-01,商务印书馆,道家经典，道德经。,8.9,1013370,,,哲学、宗教
+9787100040914,庄子,,,庄子,512,2006-12-01,商务印书馆,道家经典，庄子的哲学思想。,8.7,1013371,,,哲学、宗教
+9787508693026,白鹿原,,,陈忠实,544,2012-03-01,中信出版社,描写关中平原50年变迁的雄奇史诗。,8.9,1085799,,,文学
+9787508693033,废都,,,贾平凹,470,2012-03-01,中信出版社,一个知识分子的精神历程。,8.5,1003149,,,文学
+9787020139125,青春之歌,,,杨沫,608,2018-06-01,人民文学出版社,一个知识女性的成长历程。,8.4,1011602,,,文学
+9787020139132,林家铺子,,,茅盾,176,2018-06-01,人民文学出版社,一个小商人的破产史。,8.3,1022846,,,文学
+9787020139149,四世同堂,,,老舍,1056,2018-06-01,人民文学出版社,抗战时期北京一个大杂院里的众生相。,9.0,1024361,,,文学
+9787020139156,雷雨·日出·原野,,,曹禺,416,2018-06-01,人民文学出版社,曹禺三大名剧。,8.7,1011268,,,文学
+9787544758178,女神,,,郭沫若,208,2016-08-01,译林出版社,郭沫若的代表性诗集。,8.2,1012345,,,文学
+9787544758185,繁星·春水,,,冰心,128,2016-08-01,译林出版社,冰心的经典诗集。,8.3,1023456,,,文学
+9787544758192,草房子,,,曹文轩,288,2016-08-01,译林出版社,一个男孩桑桑刻骨铭心难以忘怀的六年小学生活。,8.6,1034567,,,文学
+9787544758208,城南旧事,,,林海音,224,2016-08-01,译林出版社,一个人的童年往事。,8.8,1045678,,,文学
+9787544758215,朝花夕拾·呐喊,,,鲁迅,384,2016-08-01,译林出版社,鲁迅经典作品合集。,9.0,1056789,,,文学
+9787559447258,霍乱时期的爱情,El amor en los tiempos del cólera,,加西亚·马尔克斯,448,2018-10-01,江苏凤凰文艺出版社,一个关于爱情的史诗。,8.9,10594787,,,文学
+9787559447265,Love in the Time of Cholera,El amor en los tiempos del cólera,,Gabriel García Márquez,448,2018-10-01,Vintage International,An epic tale of love and cholera.,8.9,10594788,,,文学
+9787544270892,达·芬奇密码,The Da Vinci Code,,丹·布朗,454,2005-01-01,上海人民出版社,一个关于宗教秘密的惊险小说。,8.1,1817345,,,文学
+9787544270908,天使与魔鬼,Angels & Demons,,丹·布朗,736,2005-06-01,上海人民出版社,哈佛大学符号学教授罗伯特·兰登的冒险。,8.0,1817346,,,文学
+9787544270915,失落的符号,The Lost Symbol,,丹·布朗,672,2010-03-01,上海人民出版社,兰登教授在华盛顿特区的新冒险。,7.9,4187022,,,文学
+9787559447272,一个陌生女人的来信,Brief einer Unbekannten,,茨威格,96,2018-10-01,江苏凤凰文艺出版社,一个女人对一个男人的深情告白。,8.8,1761345,,,文学
+9787559447289,象棋的故事,Schachnovelle,,茨威格,128,2018-10-01,江苏凤凰文艺出版社,在轮船上发生的象棋对弈。,8.7,1761346,,,文学
+9787544758222,安娜·卡列尼娜,Анна Каренина,,列夫·托尔斯泰,1056,2016-08-01,译林出版社,一个贵族女性的悲剧命运。,9.1,1023561,,,文学
+9787544758239,战争与和平,Война и мир,,列夫·托尔斯泰,1440,2016-08-01,译林出版社,俄国人民抗击拿破仑入侵的历史画卷。,9.3,1023562,,,文学
+9787544758246,罪与罚,Преступление и наказание,,费奥多尔·陀思妥耶夫斯基,704,2016-08-01,译林出版社,一个大学生犯罪后的心理历程。,9.0,1023563,,,文学
+9787544758253,卡拉马佐夫兄弟,Братья Карамазовы,,费奥多尔·陀思妥耶夫斯基,1088,2016-08-01,译林出版社,陀思妥耶夫斯基的最后一部长篇小说。,8.9,1023564,,,文学
+9787559447296,钢铁是怎样炼成的,Как закалялась сталь,,尼古拉·奥斯特洛夫斯基,384,2018-10-01,江苏凤凰文艺出版社,保尔·柯察金的成长历程。,8.7,1023565,,,文学 

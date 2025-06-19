@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ sender['account'] }} | 聊天 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="{{ sender['profile_photo'] }}" type="image/x-icon"/>
+</head>
+
+<body class="single is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+    <!-- Main -->
+    <div id="main">
+
+        <!-- Post -->
+        <article class="post">
+            <header>
+                <div class="title">
+                    <h2><a href="/chat/{{ sender['id'] }}">与 {{ sender['account'] }} 的聊天</a></h2>
+                    <i class="icon solid fa-comment">共 {{ chats | length }} 条往来消息</i>
+                </div>
+                <div class="meta">
+                    <span class="published">{{ sender['last_time'] }}</span>
+                    <a href="/profile/{{ sender['id'] }}" class="author">
+                        <span class="name">{{ sender['account'] }}</span>
+                        <img src="{{ sender['profile_photo'] }}" alt="{{ sender['account'] }}">
+                    </a>
+                </div>
+            </header>
+            <!-- content -->
+            <span class="content" id="chat-list">
+                {% for chat in chats %}
+                    {% if chat['sender_id']!=login_user['id'] %}
+                        {% include '_opposite_chat.html' %}
+                    {% else %}
+                        {% include '_chat.html' %}
+                    {% endif %}
+                {% endfor %}
+            </span>
+
+            <div style="display: flex; margin-top: 15px">
+                <label for="reply_input" style="margin-right: 5px">
+                    <input id="reply_input" type="text" style="flex: 1;margin: 5px" placeholder="请文明发言哦">
+                </label>
+                <button id="addComment" style="margin: 5px;" onclick="reply()">发送</button>
+            </div>
+        </article>
+    </div>
+
+    <!-- About -->
+    {% include '_about.html' %}
+</div>
+
+<!-- Scripts -->
+{% include '_scripts.html' %}
+<script>
+    function reply() {
+        $.ajax({
+            url: '/chat/{{ sender['id'] }}',
+            type: 'POST',
+            data: {
+                'content': $('#reply_input').val()
+            },
+            beforeSend: function () {
+                if ($('#reply_input').val() === '') {
+                    document.getElementById('flask-info').innerHTML = '<div class="message">请输入内容</div>';
+                    reloadFlaskInfo();
+                    return false;
+                }
+            },
+            success: function (data) {
+                if (data['status']) {
+                    const new_chat = `
+                    <time class="chat-time">${data['send_time']}</time>
+                    <div class="chat-container chat">
+                        <div class="chat-content-container">
+                            <p>${data['content']}</p>
+                        </div>
+                        <a href="/profile/${data['sender_id']}">
+                            <img src="${data['profile_photo']}" class="chat-profile-photo">
+                        </a>
+                    </div>
+                    `
+                    const new_chat_element = document.createElement('div');
+                    new_chat_element.innerHTML = new_chat;
+                    document.getElementById('chat-list').appendChild(new_chat_element);
+                    document.getElementById('reply_input').value = '';
+                    document.getElementById('flask-info').innerHTML = '<div class="message">发送成功</div>';
+                } else {
+                    document.getElementById('flask-info').innerHTML = '<div class="message">发送失败</div>';
+                }
+                reloadFlaskInfo();
+            }
+        });
+    }
+</script>
+<style>
+    .chat-container {
+        display: flex;
+    }
+
+    .chat-container.chat {
+        justify-content: flex-end;
+    }
+
+    .chat-container.opposite-chat {
+        justify-content: flex-start;
+    }
+
+    .chat-time {
+        font-size: 0.8em;
+        color: rgba(160, 160, 160, 0.8);
+        display: flex;
+        justify-content: center;
+    }
+
+    .chat-profile-photo {
+        width: 50px;
+        height: 50px;
+        border-radius: 5px;
+    }
+
+    .chat-content-container {
+        padding: 5px;
+        border: 1px solid rgba(160, 160, 160, 0.3);
+        border-radius: 5px;
+        margin: 0 5px;
+        height: fit-content;
+        text-align: right;
+
+        p {
+            margin: 0;
+        }
+    }
+</style>
+
+</body>
+</html>

@@ -1,7 +1,23 @@
 """
-Network Services Module
-Handles email services and third-party API integrations
+网络服务模块
+==========
+
+本模块负责处理邮件服务和第三方API集成。
+
+主要功能:
+    - 邮件发送服务
+    - 验证码邮件模板
+    - 天气API集成
+    - AI模型API集成
+    - 豆瓣图书API集成
+
+依赖:
+    - smtplib: SMTP客户端
+    - requests: HTTP客户端
+    - beautifulsoup4: HTML解析
+    - dashscope: 通义千问API（可选）
 """
+
 import re
 from email.mime.text import MIMEText
 from smtplib import SMTP_SSL, SMTPException
@@ -20,22 +36,43 @@ except ImportError:
 
 
 class EmailServiceError(Exception):
-    """Custom exception for email service errors"""
+    """邮件服务相关的自定义异常"""
     pass
 
 
 class APIServiceError(Exception):
-    """Custom exception for API service errors"""
+    """API服务相关的自定义异常"""
     pass
 
 
 class EmailService:
     """
-    Modern email service with improved error handling and templating
+    现代化的邮件服务，提供改进的错误处理和模板功能
+    
+    主要职责:
+        1. 发送验证码邮件
+        2. 管理邮件模板
+        3. 处理SMTP连接
+        4. 错误处理和日志
+        
+    设计特点:
+        - 模板化：使用HTML模板美化邮件
+        - 安全性：使用SSL加密连接
+        - 错误处理：详细的异常信息
     """
     
     def __init__(self):
-        """Initialize email service with configuration"""
+        """
+        初始化邮件服务
+        
+        初始化步骤:
+            1. 加载邮件配置
+            2. 设置SMTP参数
+            3. 加载邮件模板
+            
+        异常:
+            EmailServiceError: 当初始化失败时
+        """
         try:
             email_config = config_manager.get_email_config()
             self._smtp_host = email_config['Host']
@@ -44,12 +81,24 @@ class EmailService:
             self._password = email_config['Password']
             self._sender_address = email_config['Sender']
         except Exception as e:
-            raise EmailServiceError(f"Failed to initialize email service: {e}")
+            raise EmailServiceError(f"邮件服务初始化失败: {e}")
         
         self._verification_template = self._get_verification_template()
     
     def _get_verification_template(self) -> str:
-        """Get email verification template"""
+        """
+        获取验证码邮件模板
+        
+        返回:
+            HTML格式的邮件模板字符串
+            
+        说明:
+            模板包含以下部分:
+            - 平台标题和Logo
+            - 验证码显示区域
+            - 重要提醒信息
+            - 页脚版权信息
+        """
         return """
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
@@ -90,27 +139,32 @@ class EmailService:
     
     def send_verification_code(self, recipient_email: str, verification_code: str) -> bool:
         """
-        Send verification code to recipient
+        发送验证码邮件
         
-        Args:
-            recipient_email: Recipient's email address
-            verification_code: Verification code to send
+        参数:
+            recipient_email: 接收者邮箱地址
+            verification_code: 要发送的验证码
             
-        Returns:
-            True if email sent successfully, False otherwise
+        返回:
+            发送成功返回True，否则返回False
             
-        Raises:
-            EmailServiceError: If email configuration is invalid
+        异常:
+            EmailServiceError: 当邮件配置无效时
+            
+        说明:
+            1. 自动将数字验证码转换为字符串
+            2. 使用HTML模板格式化邮件内容
+            3. 设置UTF-8编码确保中文正常显示
         """
         try:
-            # Ensure verification code is string
+            # 确保验证码为字符串类型
             if isinstance(verification_code, int):
                 verification_code = str(verification_code)
             
-            # Format email content
+            # 格式化邮件内容
             email_content = self._verification_template.format(verification_code)
             
-            # Create message
+            # 创建邮件对象
             message = MIMEText(email_content, 'html', 'utf-8')
             message['Subject'] = "墨韵读书平台 - 密码重置验证码"
             message['From'] = self._sender_address
@@ -119,75 +173,104 @@ class EmailService:
             return self._send_email(recipient_email, message)
             
         except Exception as e:
-            raise EmailServiceError(f"Failed to send verification code: {e}")
+            raise EmailServiceError(f"验证码发送失败: {e}")
     
     def _send_email(self, recipient: str, message: MIMEText) -> bool:
         """
-        Send email via SMTP
+        通过SMTP发送邮件
         
-        Args:
-            recipient: Recipient email address
-            message: Email message object
+        参数:
+            recipient: 接收者邮箱地址
+            message: 邮件对象
             
-        Returns:
-            True if sent successfully, False otherwise
+        返回:
+            发送成功返回True，否则返回False
+            
+        说明:
+            1. 使用SSL加密连接
+            2. 自动处理连接关闭
+            3. 生产环境禁用调试输出
         """
         try:
             with SMTP_SSL(self._smtp_host, self._smtp_port) as smtp_server:
-                smtp_server.set_debuglevel(0)  # Disable debug for production
+                smtp_server.set_debuglevel(0)  # 生产环境禁用调试
                 smtp_server.login(self._username, self._password)
                 smtp_server.sendmail(self._sender_address, [recipient], message.as_string())
             return True
             
         except SMTPException as e:
-            print(f"SMTP Error: {e}")
+            print(f"SMTP错误: {e}")
             return False
         except Exception as e:
-            print(f"Email sending error: {e}")
+            print(f"邮件发送错误: {e}")
             return False
 
 
 class ExternalAPIService:
     """
-    External API service for third-party integrations
+    外部API服务，用于第三方集成
+    
+    主要职责:
+        1. 天气信息获取
+        2. AI模型调用
+        3. 豆瓣图书信息获取
+        
+    支持的API:
+        - 易客天气API
+        - 通义千问API
+        - 豆瓣图书API
     """
     
-    # AI Model configurations
+    # AI模型配置
     AI_MODELS = {
-        "qwen-turbo": "qwen-turbo",
-        "qwen-plus": "qwen-plus", 
-        "qwen-max": "qwen-max",
-        "qwen-max-1201": "qwen-max-1201",
-        "qwen-max-longcontext": "qwen-max-longcontext"
+        "qwen-turbo": "qwen-turbo",           # 通义千问-涡轮版
+        "qwen-plus": "qwen-plus",             # 通义千问-加强版
+        "qwen-max": "qwen-max",               # 通义千问-最强版
+        "qwen-max-1201": "qwen-max-1201",     # 通义千问-最强版(12.01)
+        "qwen-max-longcontext": "qwen-max-longcontext"  # 通义千问-长文本版
     }
     
     def __init__(self):
-        """Initialize external API service"""
+        """
+        初始化外部API服务
+        
+        初始化步骤:
+            1. 设置HTTP请求头
+            2. 加载API配置
+            3. 检查可选依赖
+        """
         self._user_agent = (
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
             '(KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57'
         )
         
-        # Load API configurations
+        # 加载API配置
         try:
             self._weather_config = config_manager.get_api_config('Yiketianqi')
             if DASHSCOPE_AVAILABLE:
                 self._ai_config = config_manager.get_api_config('Qwen')
         except Exception as e:
-            print(f"Warning: Some API configurations not available: {e}")
+            print(f"警告: 部分API配置不可用: {e}")
     
     def get_weather_by_ip(self, client_ip: str) -> Dict[str, Any]:
         """
-        Get weather information based on client IP address
+        根据客户端IP获取天气信息
         
-        Args:
-            client_ip: Client's IP address
+        参数:
+            client_ip: 客户端IP地址
             
-        Returns:
-            Weather information dictionary
+        返回:
+            包含天气信息的字典
             
-        Raises:
-            APIServiceError: If weather API request fails
+        异常:
+            APIServiceError: 当天气API请求失败时
+            
+        说明:
+            使用易客天气API获取:
+            - 实时天气
+            - 温度范围
+            - 天气描述
+            - 空气质量
         """
         try:
             response = http_get(

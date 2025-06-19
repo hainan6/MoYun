@@ -1,0 +1,985 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ login_user['account'] }} | 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="/static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 全局样式优化 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding-top: 2rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 卡片样式 */
+        .modern-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .modern-card:hover {
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 主页欢迎卡片 */
+        .welcome-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .welcome-header {
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .welcome-body {
+            position: relative;
+            z-index: 2;
+            padding: 1.5rem;
+        }
+
+        /* 天气信息 */
+        .weather-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        /* 诗词区域 */
+        .poetry-section {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: 'Noto Serif SC', serif;
+            font-style: italic;
+            text-align: center;
+            position: relative;
+        }
+
+        .poetry-section::before {
+            content: '"';
+            position: absolute;
+            left: 0.5rem;
+            top: 0.2rem;
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+
+        .poetry-section::after {
+            content: '"';
+            position: absolute;
+            right: 0.5rem;
+            bottom: 0.2rem;
+            font-size: 1.5rem;
+            opacity: 0.6;
+        }
+
+        /* 消息中心 */
+        .message-center {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .message-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1rem;
+            border: none;
+        }
+
+        .message-item {
+            background: var(--white);
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .message-item:last-child {
+            border-bottom: none;
+        }
+
+        .message-item:hover {
+            background: #f8f9fc;
+            transform: translateX(5px);
+        }
+
+        /* 徽章样式 */
+        .badge-modern {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.65rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .badge-danger-modern {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+        }
+
+        .badge-warning-modern {
+            background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%);
+            color: white;
+            border: none;
+        }
+
+        .badge-info-modern {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            border: none;
+        }
+
+        .badge-success-modern {
+            background: linear-gradient(135deg, #55a3ff 0%, #003d82 100%);
+            color: white;
+            border: none;
+        }
+
+        /* 图标样式 */
+        .icon-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .weather-icon {
+            color: #ffd700;
+            font-size: 1.1rem;
+        }
+
+        /* 书评卡片 */
+        .journal-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .journal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .journal-card:hover::before {
+            opacity: 1;
+        }
+
+        .journal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-light);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .welcome-card::before {
+                display: none;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 文字增强 */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .message-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        /* 平台介绍区域样式 */
+        .platform-intro {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 1.5rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+            line-height: 1.4;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+            padding: 1.5rem 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .feature-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-description {
+            color: var(--text-muted);
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #48bb78 100%);
+            color: white;
+            padding: 1.5rem 1.5rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cta-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .cta-subtitle {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-button.primary {
+            background: white;
+            color: var(--accent-color);
+            border-color: white;
+        }
+
+        .cta-button.primary:hover {
+            background: #f8f9fa;
+            color: var(--accent-color);
+            border-color: #f8f9fa;
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem 1rem;
+                gap: 1rem;
+            }
+            
+            .feature-card {
+                padding: 1rem;
+            }
+            
+            .feature-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .feature-title {
+                font-size: 1rem;
+                margin-bottom: 0.6rem;
+            }
+            
+            .feature-description {
+                font-size: 0.85rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.8rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-button {
+                padding: 0.6rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 1.2rem 1rem;
+            }
+            
+            .hero-title {
+                font-size: 1.3rem;
+                margin-bottom: 0.4rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.85rem;
+                line-height: 1.3;
+            }
+            
+            .stats-section {
+                padding: 1.2rem 1rem;
+            }
+            
+            .cta-section {
+                padding: 1.2rem 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            
+            .stat-label {
+                font-size: 0.8rem;
+            }
+            
+            .cta-title {
+                font-size: 1.1rem;
+            }
+            
+            .cta-subtitle {
+                font-size: 0.85rem;
+            }
+        }
+        
+        /* 大屏幕优化 */
+        @media (min-width: 1400px) {
+            .feature-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* 简洁的加载效果 */
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include '_flask-info.html' %}
+    <!-- Header -->
+    {% include '_header.html' %}
+    <!-- Menu -->
+    {% include '_menu.html' %}
+
+    <!-- Main -->
+    <div id="main" class="container-fluid">
+        <div class="content-wrapper">
+            <div class="row">
+                <!-- 主内容区域 -->
+                <div class="col-lg-8 col-md-7">
+                    <!-- 平台介绍主区域 -->
+                    <div class="platform-intro fade-in">
+                        <!-- Hero区域 -->
+                        <div class="hero-section">
+                            <div class="hero-content">
+                                <h1 class="hero-title">
+                                    <i class="fas fa-book-reader me-3"></i>墨韵读书平台
+                                </h1>
+                                <p class="hero-subtitle">
+                                    在文字的海洋中遨游，在思想的碰撞中成长<br>
+                                    让每一次阅读都成为心灵的诗意之旅
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 特色功能区域 -->
+                        <div class="feature-grid">
+                            <div class="feature-card fade-in" data-delay="0.1">
+                                <div class="feature-icon">
+                                    <i class="fas fa-pen-fancy"></i>
+                                </div>
+                                <h3 class="feature-title">书评分享</h3>
+                                <p class="feature-description">
+                                    记录每一次阅读的感悟，分享独特的见解与思考，与志同道合的书友交流心得体会。
+                                </p>
+                            </div>
+
+                            <div class="feature-card fade-in" data-delay="0.2">
+                                <div class="feature-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <h3 class="feature-title">读书小组</h3>
+                                <p class="feature-description">
+                                    加入或创建读书小组，与书友们一起探讨文学作品，共同成长，深度交流阅读心得。
+                                </p>
+                            </div>
+
+                            <div class="feature-card fade-in" data-delay="0.3">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <h3 class="feature-title">图书管理</h3>
+                                <p class="feature-description">
+                                    建立个人图书收藏库，记录已读、在读、想读的书籍，让阅读历程一目了然。
+                                </p>
+                            </div>
+
+                            <div class="feature-card fade-in" data-delay="0.4">
+                                <div class="feature-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h3 class="feature-title">互动交流</h3>
+                                <p class="feature-description">
+                                    通过评论、私信等方式与其他读者深度交流，建立属于读书人的社交网络。
+                                </p>
+                            </div>
+
+                            <div class="feature-card fade-in" data-delay="0.5">
+                                <div class="feature-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h3 class="feature-title">智能搜索</h3>
+                                <p class="feature-description">
+                                    快速搜索感兴趣的书籍、书评和讨论话题，发现更多优质的阅读内容。
+                                </p>
+                            </div>
+
+                            <div class="feature-card fade-in" data-delay="0.6">
+                                <div class="feature-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <h3 class="feature-title">阅读统计</h3>
+                                <p class="feature-description">
+                                    追踪阅读进度，查看阅读统计数据，让阅读习惯可视化，激励持续阅读。
+                                </p>
+                            </div>
+                        </div>
+
+                        
+
+                        <!-- 行动号召区域 -->
+                        <div class="cta-section">
+                            <h2 class="cta-title">开始你的阅读之旅</h2>
+                            <p class="cta-subtitle">
+                                加入墨韵读书平台，与千万书友一起分享阅读的美好时光
+                            </p>
+                            <div class="cta-buttons">
+                                <a href="/add_journal" class="cta-button primary">
+                                    <i class="fas fa-pen me-2"></i>写书评
+                                </a>
+                                <a href="/book_menu" class="cta-button">
+                                    <i class="fas fa-book me-2"></i>浏览图书
+                                </a>
+                                <a href="/group_menu" class="cta-button">
+                                    <i class="fas fa-users me-2"></i>加入小组
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 侧边栏区域 -->
+                <div class="col-lg-4 col-md-5">
+                    <!-- Sidebar -->
+                    <section id="sidebar">
+                        <!-- Intro -->
+                        <section id="intro" class="fade-in">
+                            <div class="welcome-card modern-card">
+                                <div class="welcome-header">
+                                    <h4 class="section-title mb-0">
+                                        <i class="fas fa-home me-2"></i>主页
+                                    </h4>
+                                </div>
+                                <div class="welcome-body">
+                                    <p class="mb-3">
+                                        <i class="fas fa-heart me-2 text-warning"></i>
+                                        欢迎回来，今天做些什么呢？
+                                    </p>
+                                    
+                                    <!-- 天气信息 -->
+                                    <div class="weather-card">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-cloud-sun weather-icon me-2"></i>
+                                            <div class="flex-grow-1">
+                                                <strong>{{ weather['city'] }}</strong> 天气{{ weather['weather'] }}
+                                                <br>
+                                                <small>
+                                                    当前气温 <strong>{{ weather['temperature'] }}℃</strong>
+                                                    ({{ weather['temperature_range'][0] }}℃～{{ weather['temperature_range'][1] }}℃)
+                                                    <br>{{ weather['wind'] }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 诗词 -->
+                                    <div class="poetry-section">
+                                        <p id="jinrishici-sentence" class="mb-0 text-white-50">
+                                            正在加载今日诗词....
+                                        </p>
+                                        <script async src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Mini Posts -->
+                        <section class="fade-in">
+                            <div class="message-center modern-card">
+                                <div class="message-header">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-envelope me-2"></i>
+                                        <a href="/message" class="text-white text-decoration-none">消息中心</a>
+                                    </h5>
+                                </div>
+                                <div>
+                                    <!-- Mini Post - 书评回复 -->
+                                    <div class="message-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="message-title">
+                                                <i class="fas fa-comment-dots me-2 icon-gradient"></i>
+                                                <a href="/message" class="text-decoration-none text-dark">书评回复</a>
+                                            </h6>
+                                            {% if unread_message_num['journalComment'] == 0 %}
+                                                <small class="text-muted">没有未读回复</small>
+                                            {% else %}
+                                                <small class="text-success fw-bold">{{ unread_message_num['journalComment'] }}条未读回复</small>
+                                            {% endif %}
+                                        </div>
+                                        {% if unread_message_num['journalComment'] > 0 %}
+                                            <span class="badge badge-danger-modern badge-modern">{{ unread_message_num['journalComment'] }}</span>
+                                        {% else %}
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Mini Post - 新帖 -->
+                                    <div class="message-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="message-title">
+                                                <i class="fas fa-plus-circle me-2 icon-gradient"></i>
+                                                <a href="/message" class="text-decoration-none text-dark">新帖</a>
+                                            </h6>
+                                            {% if unread_message_num['groupDiscussion'] == 0 %}
+                                                <small class="text-muted">没有未读新帖</small>
+                                            {% else %}
+                                                <small class="text-success fw-bold">{{ unread_message_num['groupDiscussion'] }}条未读新帖</small>
+                                            {% endif %}
+                                        </div>
+                                        {% if unread_message_num['groupDiscussion'] > 0 %}
+                                            <span class="badge badge-warning-modern badge-modern">{{ unread_message_num['groupDiscussion'] }}</span>
+                                        {% else %}
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Mini Post - 帖子回复 -->
+                                    <div class="message-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="message-title">
+                                                <i class="fas fa-reply me-2 icon-gradient"></i>
+                                                <a href="/message" class="text-decoration-none text-dark">帖子回复</a>
+                                            </h6>
+                                            {% if unread_message_num['discussionReply'] == 0 %}
+                                                <small class="text-muted">没有未读回复</small>
+                                            {% else %}
+                                                <small class="text-success fw-bold">{{ unread_message_num['discussionReply'] }}条未读回复</small>
+                                            {% endif %}
+                                        </div>
+                                        {% if unread_message_num['discussionReply'] > 0 %}
+                                            <span class="badge badge-info-modern badge-modern">{{ unread_message_num['discussionReply'] }}</span>
+                                        {% else %}
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Mini Post - 私信 -->
+                                    <div class="message-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="message-title">
+                                                <i class="fas fa-paper-plane me-2 icon-gradient"></i>
+                                                <a href="/message" class="text-decoration-none text-dark">私信</a>
+                                            </h6>
+                                            {% if unread_message_num['chat'] == 0 %}
+                                                <small class="text-muted">没有未读私信</small>
+                                            {% else %}
+                                                <small class="text-success fw-bold">{{ unread_message_num['chat'] }}条未读私信</small>
+                                            {% endif %}
+                                        </div>
+                                        {% if unread_message_num['chat'] > 0 %}
+                                            <span class="badge badge-success-modern badge-modern">{{ unread_message_num['chat'] }}</span>
+                                        {% else %}
+                                            <i class="fas fa-check-circle text-success"></i>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% include '_scripts.html' %}
+
+<script>
+// 简单的页面加载效果
+document.addEventListener('DOMContentLoaded', function() {
+    // 给所有元素添加简单的淡入效果
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(15px)';
+            element.style.transition = 'all 0.5s ease';
+            
+            // 触发动画
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 50);
+        }, index * 100);
+    });
+    
+    // 平滑滚动
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+    
+    // 诗词加载完成后的简单效果
+    const poetryElement = document.getElementById('jinrishici-sentence');
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList' && poetryElement.textContent !== '正在加载今日诗词....') {
+                poetryElement.style.transition = 'opacity 0.5s ease';
+                poetryElement.style.opacity = '0.8';
+                setTimeout(() => {
+                    poetryElement.style.opacity = '1';
+                }, 100);
+            }
+        });
+    });
+    observer.observe(poetryElement, { childList: true, subtree: true });
+});
+</script>
+
+</body>
+
+</html>

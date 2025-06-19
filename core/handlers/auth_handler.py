@@ -1,7 +1,22 @@
 """
-Authentication Handler Module
-Handles user authentication, registration, and password management
+用户认证处理器模块
+================
+
+本模块负责处理用户认证、注册和密码管理相关的所有功能。
+
+主要功能:
+    - 用户登录认证
+    - 新用户注册
+    - 密码重置
+    - 验证码发送
+    - 用户登出
+
+依赖:
+    - flask: Web框架
+    - core.modules.network_services: 邮件服务
+    - core.handlers.base_handler: 基础处理器
 """
+
 import random
 from typing import Any
 from flask import Flask, request, redirect, url_for, session, Response
@@ -12,106 +27,142 @@ from .base_handler import BaseHandler
 
 class AuthenticationHandler(BaseHandler):
     """
-    Handler for authentication-related operations
+    认证相关操作的处理器类
+    
+    主要职责:
+        1. 处理用户登录请求
+        2. 处理新用户注册
+        3. 处理密码重置流程
+        4. 发送验证码
+        5. 处理用户登出
+        
+    继承:
+        BaseHandler: 继承基础处理器的通用功能
     """
     
     def __init__(self, database_manager, file_manager, email_service: EmailService):
         """
-        Initialize authentication handler
+        初始化认证处理器
         
-        Args:
-            database_manager: Database manager instance
-            file_manager: File manager instance
-            email_service: Email service instance
+        参数:
+            database_manager: 数据库管理器实例
+            file_manager: 文件管理器实例
+            email_service: 邮件服务实例，用于发送验证码
         """
         super().__init__(database_manager, file_manager)
         self.email_service = email_service
     
     def register_routes(self, app: Flask) -> None:
         """
-        Register authentication routes with Flask app
+        注册认证相关的路由到Flask应用
         
-        Args:
-            app: Flask application instance
+        参数:
+            app: Flask应用实例
+            
+        路由列表:
+            - /: 首页，处理登录
+            - /register: 用户注册
+            - /sendCaptcha: 发送验证码
+            - /resetPasswd: 密码重置
+            - /logout: 用户登出
         """
         
         @app.route("/", methods=["GET", "POST"])
         def index() -> Any:
             """
-            Main index page handling login
+            首页路由，处理登录请求
             
-            Returns:
-                Response for index page or redirect
+            返回:
+                - GET: 渲染首页
+                - POST: 处理登录，成功后重定向到主页
             """
             return self._handle_index()
         
         @app.route("/register", methods=["POST"])
         def register() -> Any:
             """
-            User registration endpoint
+            用户注册路由
             
-            Returns:
-                Redirect response after registration attempt
+            返回:
+                注册处理后的重定向响应
             """
             return self._handle_registration()
         
         @app.route("/sendCaptcha", methods=["POST"])
         def send_captcha() -> Any:
             """
-            Send verification code for password reset
+            发送密码重置验证码路由
             
-            Returns:
-                Redirect response after sending captcha
+            返回:
+                发送验证码后的重定向响应
             """
             return self._handle_send_captcha()
         
         @app.route("/resetPasswd", methods=["POST", "GET"])
         def reset_password() -> Any:
             """
-            Password reset endpoint
+            密码重置路由
             
-            Returns:
-                Redirect response after password reset attempt
+            返回:
+                密码重置处理后的重定向响应
             """
             return self._handle_password_reset()
         
         @app.route("/logout", methods=["GET"])
         def logout() -> Any:
             """
-            User logout endpoint
+            用户登出路由
             
-            Returns:
-                Redirect response after logout
+            返回:
+                登出后重定向到首页
             """
             return self._handle_logout()
     
     def _handle_index(self) -> Any:
-        """Handle index page requests"""
+        """
+        处理首页请求
+        
+        返回:
+            - POST请求: 处理登录
+            - GET请求: 显示首页
+        """
         if request.method == "POST":
             return self._process_login()
         else:
             return self._show_index_page()
     
     def _process_login(self) -> Any:
-        """Process login form submission"""
+        """
+        处理登录表单提交
+        
+        处理流程:
+            1. 获取并验证表单数据
+            2. 验证登录凭据
+            3. 获取用户信息
+            4. 设置登录会话
+            5. 更新用户登录时间
+            
+        返回:
+            登录处理后的重定向响应
+        """
         try:
-            # Get form data
+            # 获取表单数据
             form_data = self.safe_get_form_data("account", "password")
             
-            # Validate required fields
+            # 验证必填字段
             if not self.validate_required_fields(form_data, "account", "password"):
                 self.flash_error("请输入用户名和密码")
                 return redirect(url_for("index"))
             
-            # Verify login credentials
+            # 验证登录凭据
             user_id = self.db.verify_login(form_data["account"], form_data["password"])
             
             if user_id:
-                # Login successful
+                # 登录成功
                 user_data = self.db.get_user(id=user_id)
                 if user_data:
                     self.login_user(user_data)
-                    # Update user login time
+                    # 更新用户登录时间
                     self.db.update_user(user_id=user_id)
                     self.flash_success("登录成功")
                     return redirect(url_for("home"))
@@ -119,7 +170,7 @@ class AuthenticationHandler(BaseHandler):
                     self.flash_error("用户信息获取失败")
                     return redirect(url_for("index"))
             else:
-                # Login failed
+                # 登录失败
                 self.flash_error("用户名或密码错误")
                 return redirect(url_for("index"))
                 
@@ -128,31 +179,50 @@ class AuthenticationHandler(BaseHandler):
             return redirect(url_for("index"))
     
     def _show_index_page(self) -> Any:
-        """Show index page"""
+        """
+        显示首页
+        
+        说明:
+            如果用户已登录，重定向到主页
+            否则显示登录页面
+        
+        返回:
+            页面响应或重定向
+        """
         if self.is_authenticated():
-            # Already logged in, redirect to home
+            # 已登录，重定向到主页
             return redirect(url_for("home"))
         
         return self.render_with_user_context("index.html")
     
     def _handle_registration(self) -> Any:
-        """Handle user registration"""
+        """
+        处理用户注册
+        
+        处理流程:
+            1. 获取并验证注册表单数据
+            2. 检查用户是否已存在
+            3. 创建新用户
+            
+        返回:
+            注册处理后的重定向响应
+        """
         try:
-            # Get form data
+            # 获取表单数据
             form_data = self.safe_get_form_data("account", "password", "email", "telephone")
             
-            # Validate required fields
+            # 验证必填字段
             if not self.validate_required_fields(form_data, "account", "password", "email"):
                 self.flash_warning("账号、密码、邮箱是必须的")
                 return redirect(url_for("index") + "#register")
             
-            # Check if user already exists
+            # 检查用户是否已存在
             existing_user = self.db.get_user(account=form_data["account"])
             if existing_user:
                 self.flash_info("用户名已存在，请尝试登录或找回密码")
                 return redirect(url_for("index") + "#login")
             
-            # Create new user
+            # 创建新用户
             user_id = self.db.create_user(
                 account=form_data["account"],
                 raw_password=form_data["password"],
@@ -172,16 +242,27 @@ class AuthenticationHandler(BaseHandler):
             return redirect(url_for("index") + "#register")
     
     def _handle_send_captcha(self) -> Any:
-        """Handle sending verification code"""
+        """
+        处理发送验证码请求
+        
+        处理流程:
+            1. 验证用户名
+            2. 检查用户是否存在
+            3. 检查用户邮箱
+            4. 生成并发送验证码
+            
+        返回:
+            发送验证码后的重定向响应
+        """
         try:
-            # Get form data
+            # 获取表单数据
             form_data = self.safe_get_form_data("account")
             
             if not form_data["account"]:
                 self.flash_warning("请输入用户名")
                 return redirect(url_for("index") + "#resetPasswd")
             
-            # Check if user exists
+            # 检查用户是否存在
             user = self.db.get_user(account=form_data["account"])
             if not user:
                 self.flash_info("用户名不存在，请先注册")
@@ -191,10 +272,10 @@ class AuthenticationHandler(BaseHandler):
                 self.flash_error("该用户未绑定邮箱，无法重置密码")
                 return redirect(url_for("index") + "#resetPasswd")
             
-            # Generate verification code
+            # 生成验证码
             captcha = str(random.randint(100000, 999999))
             
-            # Send verification code
+            # 发送验证码
             email_sent = self.email_service.send_verification_code(user["email"], captcha)
             
             if email_sent:

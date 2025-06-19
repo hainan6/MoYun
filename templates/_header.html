@@ -1,35 +1,49 @@
+<!-- 网站头部导航栏组件 -->
+<!-- 包含网站标题、主导航菜单和用户功能区 -->
 <header id="header">
-    <h1><a href="/home">墨 韵</a></h1>
-    <nav class="links">
+    <!-- 网站标题 -->
+    <h1><a href="/home" title="返回首页">墨 韵</a></h1>
+
+    <!-- 主导航菜单 -->
+    <nav class="links" aria-label="主导航">
         <ul>
-            <li><a href="/home">主页</a></li>
-            <li><a href="/journal_menu">书评</a></li>
-            <li><a href="/book_menu">书籍</a></li>
-            <li><a href="/group_menu">圈子</a></li>
-            <li><a href="/message">消息</a></li>
+            <li><a href="/home" title="浏览首页内容">主页</a></li>
+            <li><a href="/journal_menu" title="浏览书评文章">书评</a></li>
+            <li><a href="/book_menu" title="浏览书籍信息">书籍</a></li>
+            <li><a href="/group_menu" title="浏览读书圈子">圈子</a></li>
+            <li><a href="/message" title="查看消息通知">消息</a></li>
         </ul>
     </nav>
-    <nav class="main">
+
+    <!-- 用户功能区：包含用户头像、搜索框和菜单按钮 -->
+    <nav class="main" aria-label="用户功能">
         <ul>
+            <!-- 用户头像区域 - 仅登录用户可见 -->
             {% if login_user['id'] %}
                 <li class="profile">
-                    <a class="image" href="/profile/{{ login_user['id'] }}">
-                        <img src="{{ login_user['profile_photo'] }}" width="50%"
-                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;" alt="个人主页">
+                    <a class="image" href="/profile/{{ login_user['id'] }}" title="访问个人主页">
+                        <img src="{{ login_user['profile_photo'] }}" 
+                             alt="用户头像"
+                             width="50%"
+                             style="margin-left: 25%;margin-top: 15%;border-radius: 50%;">
                     </a>
                 </li>
             {% endif %}
+
+            <!-- 搜索功能 -->
             <li class="search">
-                <a class="fa-search" href="#search">Search</a>
-                <form id="search" method="get" action="/search">
+                <a class="fa-search" href="#search" title="打开搜索">搜索</a>
+                <form id="search" method="get" action="/search" aria-label="站内搜索">
                     <label>
                         <input type="hidden" name="type" value="all">
-                        <input type="text" name="keyword" placeholder="搜索"/>
+                        <input type="text" name="keyword" placeholder="搜索" aria-label="搜索关键词">
                     </label>
                 </form>
             </li>
+
+            <!-- 菜单按钮 -->
             <li class="menu">
-                <a class="fa-bars" href="#menu">Menu</a>
+                <a class="fa-bars" href="#menu" title="打开菜单">菜单</a>
             </li>
         </ul>
     </nav>

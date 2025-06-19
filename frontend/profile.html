@@ -1,0 +1,806 @@
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html lang="zh-CN">
+
+<head>
+    <title>{{ user['account'] }} | 个人空间 - 墨韵</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../static/assets/home/css/main.css"/>
+    <link rel="icon" href="../static/logo/logo_320x320_colorful.png" type="image/x-icon"/>
+    
+    <style>
+        /* 全局样式优化 - 与home.html保持一致 */
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #858796;
+            --accent-color: #1cc88a;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-bg: #f8f9fc;
+            --white: #ffffff;
+            --border-color: #e3e6f0;
+            --text-muted: #5a5c69;
+            --shadow-light: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-card: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #5a5c69;
+        }
+
+        /* 主要内容区域 */
+        #main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 页面标题 */
+        .page-title {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-title::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .page-title h1 {
+            position: relative;
+            z-index: 2;
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 700;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .page-title .subtitle {
+            position: relative;
+            z-index: 2;
+            margin: 0.5rem 0 0 0;
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* 书评卡片样式 */
+        .journal-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .journal-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, #667eea 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .journal-card:hover::before {
+            opacity: 1;
+        }
+
+        .journal-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .journal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, #f8f9fc, #f5f7fa);
+        }
+
+        .journal-title {
+            margin: 0 0 1rem 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .journal-title a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .journal-title a:hover {
+            color: #667eea;
+        }
+
+        .journal-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .journal-time {
+            background: rgba(74, 108, 247, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            color: var(--primary-color);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .journal-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--primary-color);
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+
+        .journal-author:hover {
+            color: #667eea;
+        }
+
+        .journal-stats {
+            display: flex;
+            gap: 1rem;
+            margin-left: auto;
+        }
+
+        .journal-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: rgba(74, 108, 247, 0.08);
+            border-radius: 12px;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .journal-stat:hover {
+            background: rgba(74, 108, 247, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* 个人信息卡片 */
+        .profile-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-card);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card:hover {
+            box-shadow: var(--shadow-light);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(-15deg);
+        }
+
+        .profile-avatar {
+            position: relative;
+            z-index: 2;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            margin: 0 auto 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-avatar:hover {
+            transform: scale(1.05);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .profile-name {
+            position: relative;
+            z-index: 2;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        .profile-role {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: inline-block;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-body {
+            padding: 0;
+        }
+
+        .profile-info-item {
+            padding: 1.2rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-info-item:hover {
+            background: #f8f9fc;
+            transform: translateX(5px);
+        }
+
+        .profile-info-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-info-item:hover::before {
+            transform: scaleY(1);
+        }
+
+        .profile-info-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .profile-info-value {
+            color: #4a5568;
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            word-break: break-all;
+        }
+
+        /* 编辑按钮 */
+        .edit-profile-btn {
+            background: linear-gradient(135deg, var(--accent-color), #48bb78);
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1.5rem;
+            width: calc(100% - 3rem);
+            justify-content: center;
+        }
+
+        .edit-profile-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(28, 200, 138, 0.3);
+            color: white;
+        }
+
+        /* 聊天卡片 */
+        .chat-card {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .chat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .chat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .chat-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .chat-title {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .chat-title a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .chat-title a:hover {
+            opacity: 0.8;
+            color: white;
+        }
+
+        .chat-desc {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* 空状态 */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 0 15px;
+            }
+
+            .page-title {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .page-title h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-title .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .profile-header {
+                padding: 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .profile-name {
+                font-size: 1.3rem;
+            }
+
+            .journal-header {
+                padding: 1.2rem;
+            }
+
+            .journal-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .journal-stats {
+                margin-left: 0;
+                gap: 0.75rem;
+            }
+
+            body {
+                background-attachment: scroll;
+            }
+
+            .profile-info-item {
+                padding: 1rem;
+            }
+
+            .edit-profile-btn {
+                margin: 1rem;
+                width: calc(100% - 2rem);
+                padding: 0.7rem 1.5rem;
+            }
+
+            .chat-card {
+                padding: 1.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #main {
+                padding: 1.5rem 0;
+            }
+
+            .page-title {
+                padding: 1.2rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .page-title h1 {
+                font-size: 1.5rem;
+            }
+
+            .profile-header {
+                padding: 1.2rem;
+            }
+
+            .profile-avatar {
+                width: 80px;
+                height: 80px;
+            }
+
+            .profile-name {
+                font-size: 1.2rem;
+            }
+
+            .journal-stats {
+                flex-wrap: wrap;
+            }
+
+            .profile-info-item {
+                padding: 0.8rem;
+            }
+
+            .profile-info-label {
+                font-size: 0.85rem;
+            }
+
+            .profile-info-value {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #667eea 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #667eea 0%, var(--primary-color) 100%);
+        }
+
+        /* 简洁的加载效果 */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="is-preload">
+
+<!-- Wrapper -->
+<div id="wrapper">
+    <!-- 消息闪现 -->
+    {% include 'flaskInfo.html' %}
+    <!-- Header -->
+    {% include 'headerComponent.html' %}
+    <!-- Menu -->
+    {% include 'menuComponent.html' %}
+
+    <!-- Main -->
+    <div id="main">
+        <div class="content-wrapper">
+            <div class="row">
+                <!-- 主内容区域 -->
+                <div class="col-lg-8 col-md-7">
+                    <!-- 页面标题 -->
+                    <div class="page-title fade-in">
+                        <h1>
+                            <i class="fas fa-user-circle me-3"></i>{{ user['account'] }}
+                        </h1>
+                        <p class="subtitle">个人空间 · 近期书评与动态</p>
+                    </div>
+
+                    <!-- 书评列表 -->
+                    {% if journals %}
+                        <div class="mini-posts">
+                            {% for journal in journals %}
+                            <article class="journal-card fade-in">
+                                <header class="journal-header">
+                                    <h3 class="journal-title">
+                                        <a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a>
+                                    </h3>
+                                    <div class="journal-meta">
+                                        <div class="journal-time">
+                                            <i class="fas fa-clock"></i>
+                                            {{ journal['publish_time'] }}
+                                        </div>
+                                        <a href="/profile/{{ user['id'] }}" class="journal-author">
+                                            <i class="fas fa-user"></i>
+                                            <span>{{ user['account'] }}</span>
+                                        </a>
+                                        <div class="journal-stats">
+                                            <div class="journal-stat">
+                                                <i class="fas fa-heart"></i>
+                                                <span>{{ journal['like_num'] }}</span>
+                                            </div>
+                                            <div class="journal-stat">
+                                                <i class="fas fa-comment"></i>
+                                                <span>{{ journal['comment_num'] }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </header>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="empty-state fade-in">
+                            <i class="fas fa-book-open"></i>
+                            <h3>暂无书评</h3>
+                            <p>这位用户还没有发布任何书评，期待Ta的精彩分享！</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- 侧边栏区域 -->
+                <div class="col-lg-4 col-md-5">
+                    <!-- Sidebar -->
+                    <section id="sidebar">
+                        <!-- 个人信息 -->
+                        <section class="fade-in">
+                            <div class="profile-card">
+                                <div class="profile-header">
+                                    <img src="{{ profile_photo }}" alt="头像" class="profile-avatar">
+                                    <h2 class="profile-name">{{ user['account'] }}</h2>
+                                    <div class="profile-role">
+                                        {% if user['role'] == 'student' %}
+                                            <i class="fas fa-graduation-cap me-1"></i>学生
+                                        {% elif user['role'] == 'teacher' %}
+                                            <i class="fas fa-chalkboard-teacher me-1"></i>教师
+                                        {% elif user['role'] == 'admin' %}
+                                            <i class="fas fa-crown me-1"></i>管理员
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-body">
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-quote-left"></i>
+                                            个人签名
+                                        </div>
+                                        <p class="profile-info-value">{{ user['signature'] or '暂无签名' }}</p>
+                                    </div>
+                                    
+                                    {% if user['email'] %}
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-envelope"></i>
+                                            邮箱地址
+                                        </div>
+                                        <p class="profile-info-value">{{ user['email'] }}</p>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if user['telephone'] %}
+                                    <div class="profile-info-item">
+                                        <div class="profile-info-label">
+                                            <i class="fas fa-phone"></i>
+                                            联系电话
+                                        </div>
+                                        <p class="profile-info-value">{{ user['telephone'] }}</p>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                {% if login_user['id'] == user['id'] %}
+                                <a href="/edit_profile" class="edit-profile-btn">
+                                    <i class="fas fa-edit"></i>
+                                    修改个人信息
+                                </a>
+                                {% endif %}
+                            </div>
+                        </section>
+
+                        <!-- 聊天功能 -->
+                        {% if user['id'] != login_user['id'] %}
+                        <section class="fade-in">
+                            <div class="chat-card">
+                                <div class="chat-content">
+                                    <h3 class="chat-title">
+                                        <a href="/chat/{{ user['id'] }}">
+                                            <i class="fas fa-comments"></i>
+                                            开始聊天
+                                        </a>
+                                    </h3>
+                                    <p class="chat-desc">请记得礼貌用语哦</p>
+                                </div>
+                            </div>
+                        </section>
+                        {% endif %}
+                        
+                        <!-- About区域 -->
+                        <section class="fade-in">
+                            {% include 'aboutComponent.html' %}
+                        </section>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% include 'scriptsComponent.html' %}
+
+<script>
+// 简单的页面加载效果
+document.addEventListener('DOMContentLoaded', function() {
+    // 给所有元素添加简单的淡入效果
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach((element, index) => {
+        setTimeout(() => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'all 0.6s ease';
+            
+            // 触发动画
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateY(0)';
+            }, 50);
+        }, index * 100);
+    });
+    
+    // 平滑滚动
+    const links = document.querySelectorAll('a[href^="#"]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href !== '#') {
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        });
+    });
+});
+</script>
+
+</body>
+
+</html>

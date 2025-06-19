@@ -1,26 +1,33 @@
+<!-- 单篇书评详情组件 -->
 <article class="post">
+    <!-- 头部：标题与作者信息 -->
     <header>
         <div class="title">
+            <!-- 书评标题，点击可进入详情页 -->
             <h2><a href="/journal/{{ journal['id'] }}">{{ journal['title'] }}</a></h2>
         </div>
         <div class="meta">
+            <!-- 发布时间 -->
             <span class="published">{{ journal['publish_time'] }}</span>
+            <!-- 作者信息，点击头像或昵称可进入作者主页 -->
             <a href="/profile/{{ author['id'] }}" class="author">
                 <span class="name">{{ author['account'] }}</span>
                 <img src="{{ author['profile_photo'] }}" alt="{{ author['account'] }}">
             </a>
         </div>
     </header>
+    <!-- 头图展示 -->
     <span class="image featured">
         <img src="{{ journal_header }}" alt="{{ journal['title'] }}_头图"/>
     </span>
-    <!-- content -->
+    <!-- 书评正文内容，每段一个 <p> 标签 -->
     <span class="content">
         {% for para in journal['content'] %}
             <p>{{ para }}</p>
         {% endfor %}
     </span>
 
+    <!-- 关联书籍信息 -->
     <span class="mini-post" style="padding: 10px;width: fit-content">
         <a href="/book/{{ book['id'] }}">
             <img src="{{ book_cover }}" width="120px" alt="{{ book['name'] }}_封面">
@@ -28,6 +35,7 @@
         <span>提到的书籍：<a href="/book/{{ book['id'] }}">《{{ book['title'] }}》</a></span>
     </span>
     <footer>
+        <!-- 统计信息：作者、点赞、评论数 -->
         <ul class="stats">
             <li><a href="/profile/{{ journal['author_id'] }}">{{ author['account'] }}</a></li>
             <li>
@@ -36,6 +44,7 @@
             <li><i class="icon solid fa-comment" id="comment_num">{{ journal['comment_num'] }}</i></li>
         </ul>
         {% if login_user %}
+        <!-- 删除按钮，仅登录用户可见 -->
         <ul class="actions">
             <li>
                 <button class="button small" onclick="deleteJournal()" style="background-color: #dc3545; color: white;">
